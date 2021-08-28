@@ -15,4 +15,5 @@
     <string name="login_label">Login</string>
     <string name="sign_up_label">Sign Up</string>
     <string name="forgot_password_label"><u>Forgot Password</u></string>
+    <string name="username_label">Username</string>
 </resources>

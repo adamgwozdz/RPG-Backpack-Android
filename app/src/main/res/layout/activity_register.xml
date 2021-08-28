@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authorization.LoginActivity">
+    tools:context=".authorization.RegisterActivity">
 
     <TextView
-        android:id="@+id/activity_login_image_textview"
+        android:id="@+id/activity_register_image_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_64sdp"
@@ -20,22 +20,46 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_login_email_field_layout"
+        android:id="@+id/activity_register_name_field_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_32sdp"
         android:layout_marginTop="@dimen/_12sdp"
         android:drawablePadding="@dimen/_4sdp"
-        android:hint="@string/email_label"
-        app:layout_constraintBottom_toTopOf="@+id/activity_login_password_field_layout"
+        android:hint="@string/username_label"
+        app:layout_constraintBottom_toTopOf="@+id/activity_register_email_field_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_login_image_textview"
+        app:layout_constraintTop_toBottomOf="@+id/activity_register_image_textview"
+        app:startIconDrawable="@drawable/ic_baseline_person_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_register_name_field_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:importantForAutofill="no"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_register_email_field_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:drawablePadding="@dimen/_4sdp"
+        android:hint="@string/email_label"
+        app:layout_constraintBottom_toTopOf="@+id/activity_register_password_field_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_register_name_field_layout"
         app:startIconDrawable="@drawable/ic_baseline_local_post_office_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/activity_login_email_field_edit_text"
+            android:id="@+id/activity_register_email_field_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:importantForAutofill="no"
@@ -44,7 +68,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_login_password_field_layout"
+        android:id="@+id/activity_register_password_field_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,11 +79,11 @@
         app:passwordToggleEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_login_email_field_layout"
+        app:layout_constraintTop_toBottomOf="@+id/activity_register_email_field_layout"
         app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/activity_login_password_field_edit_text"
+            android:id="@+id/activity_register_password_field_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:importantForAutofill="no"
@@ -67,21 +91,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/activity_login_login_button"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:paddingHorizontal="@dimen/_20sdp"
-        android:paddingVertical="@dimen/_6sdp"
-        android:text="@string/login_label"
-        android:textSize="@dimen/_12sdp"
-        app:layout_constraintEnd_toStartOf="@+id/activity_login_signup_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_login_password_field_layout" />
-
-    <Button
-        android:id="@+id/activity_login_signup_button"
-        android:layout_width="@dimen/_100sdp"
+        android:id="@+id/activity_register_signup_button"
+        android:layout_width="@dimen/_250sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
         android:paddingHorizontal="@dimen/_20sdp"
@@ -89,17 +100,7 @@
         android:text="@string/sign_up_label"
         android:textSize="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/activity_login_login_button"
-        app:layout_constraintTop_toBottomOf="@+id/activity_login_password_field_layout" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_46sdp"
-        android:text="@string/forgot_password_label"
-        android:textSize="@dimen/_12sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_register_password_field_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
