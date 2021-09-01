@@ -13,7 +13,9 @@ public class Session {
     private Timestamp dateRemoved;
     private String image;
 
-    public Session(Integer sessionId, String name, String password, Integer maxAttributes, Timestamp dateCreated, Timestamp dateModified, Timestamp dateRemoved, String image) {
+    public Session(Integer sessionId, String name, String password, Integer maxAttributes,
+                   Timestamp dateCreated, Timestamp dateModified, Timestamp dateRemoved,
+                   String image) {
         this.sessionId = sessionId;
         this.name = name;
         this.password = password;
