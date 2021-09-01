@@ -1,4 +1,4 @@
-package com.wodu.mobile.rpg_backpack.entities;
+package com.wodu.mobile.rpg_backpack.models;
 
 import java.sql.Timestamp;
 

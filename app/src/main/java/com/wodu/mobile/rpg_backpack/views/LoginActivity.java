@@ -1,4 +1,4 @@
-package com.wodu.mobile.rpg_backpack.authorization;
+package com.wodu.mobile.rpg_backpack.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
