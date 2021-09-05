@@ -1,4 +1,4 @@
-package com.wodu.mobile.rpg_backpack;
+package com.wodu.mobile.rpg_backpack.utilities;
 
 import androidx.annotation.Nullable;
 
@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public abstract class Utilities {
-
 
     @Nullable
     public static Timestamp convertToTimestamp(String dateString) {
@@ -24,5 +23,10 @@ public abstract class Utilities {
             return new java.sql.Timestamp(parsedDate.getTime());
         } else
             return null;
+    }
+
+
+    public static String jsonResponseStringToString(String jsonResponseString) {
+        return jsonResponseString.replaceAll("\"", "");
     }
 }

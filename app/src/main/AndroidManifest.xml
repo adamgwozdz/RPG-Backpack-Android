@@ -13,10 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RPG_Backpack">
         <activity
-            android:name=".MainActivity2"
-            android:exported="true" />
-        <activity android:name="android.app.Application" />
-        <activity
             android:name=".views.RegisterActivity"
             android:exported="true"
             android:theme="@style/Theme.RPG_Backpack.NoActionBar" />
