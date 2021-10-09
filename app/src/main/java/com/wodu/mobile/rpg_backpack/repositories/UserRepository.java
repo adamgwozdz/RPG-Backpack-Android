@@ -4,12 +4,18 @@ import android.util.Log;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.wodu.mobile.rpg_backpack.ErrorHandlingAdapter;
+import com.wodu.mobile.rpg_backpack.models.User;
 import com.wodu.mobile.rpg_backpack.utilities.RestAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import io.reactivex.rxjava3.core.Observable;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class UserRepository {
 

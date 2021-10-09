@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.gson.JsonObject;
 import com.wodu.mobile.rpg_backpack.Application;
+import com.wodu.mobile.rpg_backpack.Event;
+import com.wodu.mobile.rpg_backpack.EventObserver;
 import com.wodu.mobile.rpg_backpack.repositories.UserRepository;
 import com.wodu.mobile.rpg_backpack.utilities.Utilities;
 
@@ -23,7 +25,7 @@ public class LoginActivityViewModel extends ViewModel {
     private final UserRepository userRepository = UserRepository.getInstance();
     private final CompositeDisposable disposables = new CompositeDisposable();
     private final MutableLiveData<String> loginMutableLiveData = new MutableLiveData<>();
-
+    private final MutableLiveData<Event<String>> statusMessage = new MutableLiveData<>();
 
     public LoginActivityViewModel() {}
 
@@ -42,14 +44,16 @@ public class LoginActivityViewModel extends ViewModel {
             @Override
             public void onNext(@NonNull JsonObject jsonResponse) {
                 String token = Utilities.jsonResponseStringToString(jsonResponse.get("token").toString());
-                Log.d(TAG, "Token: " + token);
                 Application.getInstance().setToken(token);
                 loginMutableLiveData.postValue(token);
+                Log.d(TAG, "Token: " + token);
             }
 
             @Override
             public void onError(@NonNull Throwable e) {
-                Log.d(TAG, "onError: " + e);
+                String error = e.getMessage();
+                loginMutableLiveData.postValue(error.trim());
+                Log.d(TAG, "onError: " + error);
             }
 
             @Override

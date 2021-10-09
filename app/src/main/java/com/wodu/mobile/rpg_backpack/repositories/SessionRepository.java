@@ -36,7 +36,7 @@ public class SessionRepository {
         return sessionService.getUserSessions(Application.getInstance().getToken());
     }
 
-    public Observable<Session> getSession(long userId) {
+    public Observable<Session> getSessionsByUserId(long userId) {
         sessionService = RestAdapter.getAdapter().create(SessionService.class);
         return sessionService.getSession(Application.getInstance().getToken(), userId);
     }

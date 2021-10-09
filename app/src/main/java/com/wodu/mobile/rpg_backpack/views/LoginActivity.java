@@ -1,6 +1,7 @@
 package com.wodu.mobile.rpg_backpack.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 
 import android.content.Intent;
@@ -8,8 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
+import com.wodu.mobile.rpg_backpack.databinding.ActivityLoginBinding;
+import com.wodu.mobile.rpg_backpack.databinding.ActivityMainBinding;
 import com.wodu.mobile.rpg_backpack.viewmodels.LoginActivityViewModel;
 
 public class LoginActivity extends AppCompatActivity {
@@ -18,11 +23,11 @@ public class LoginActivity extends AppCompatActivity {
     private LoginActivityViewModel viewModel = new LoginActivityViewModel();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        revokeToken();
 
         EditText emailEditText = findViewById(R.id.activity_login_email_field_edit_text);
         EditText passwordEditText = findViewById(R.id.activity_login_password_field_edit_text);
@@ -36,16 +41,25 @@ public class LoginActivity extends AppCompatActivity {
 
             viewModel.login(email, password).observe(this, new Observer<String>() {
                 @Override
-                public void onChanged(String token) {
-                    if (token.length() > 120)
+                public void onChanged(String response) {
+                    if (response.length() == 191)
                         RedirectToMainActivity();
-                    else
-                        Log.i(TAG, "Error: Incorrect token, couldn't redirect to MainActivity");
+                    else if (response.equals("HTTP 401")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "Incorrect E-mail or Password", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "UNAUTHORIZED");
+                            }
+                        });
+                    }
+                    viewModel.login(email, password).removeObserver(this);
                 }
             });
         });
 
-        registerButton.setOnClickListener(view -> {
+        registerButton.setOnClickListener(view ->
+        {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
             overridePendingTransition(0, 0);
@@ -56,5 +70,9 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         overridePendingTransition(0, 0);
+    }
+
+    private void revokeToken() {
+        Application.getInstance().setToken("");
     }
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.viewmodels.RegisterActivityViewModel;
 
@@ -17,13 +18,13 @@ import com.wodu.mobile.rpg_backpack.viewmodels.RegisterActivityViewModel;
 public class RegisterActivity extends AppCompatActivity {
 
     private final String TAG = "RegisterActivity";
-
     private RegisterActivityViewModel viewModel = new RegisterActivityViewModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        revokeToken();
 
         EditText nameEditText = findViewById(R.id.activity_register_name_field_edit_text);
         EditText emailEditText = findViewById(R.id.activity_register_email_field_edit_text);
@@ -57,5 +58,9 @@ public class RegisterActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.overridePendingTransition(0, 0);
+    }
+
+    private void revokeToken() {
+        Application.getInstance().setToken("");
     }
 }

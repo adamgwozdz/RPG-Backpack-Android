@@ -34,8 +34,12 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getSessions(true).observe(this, new Observer<List<Session>>() {
             @Override
             public void onChanged(List<Session> session) {
-                Log.d(TAG, "Sessions: " + session.get(0).toString());
+//                Log.d(TAG, "Sessions: " + session.get(0).toString());
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

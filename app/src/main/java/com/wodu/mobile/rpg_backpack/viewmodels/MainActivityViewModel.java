@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.wodu.mobile.rpg_backpack.ErrorHandlingAdapter;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.repositories.SessionRepository;
 
@@ -14,6 +15,8 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivityViewModel extends ViewModel {
 
@@ -27,8 +30,8 @@ public class MainActivityViewModel extends ViewModel {
 
     public MainActivityViewModel() {}
 
-    public MutableLiveData<List<Session>> getSessions(boolean onlyConnectedToUser) {
-        if (onlyConnectedToUser)
+    public MutableLiveData<List<Session>> getSessions(boolean onlyCurrentUser) {
+        if (onlyCurrentUser)
             loadUserSessionsData();
         else
             loadSessionsData();
@@ -88,7 +91,7 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     private void loadSessionData(long userId) {
-        sessionRepository.getSession(userId).subscribe(new Observer<Session>() {
+        sessionRepository.getSessionsByUserId(userId).subscribe(new Observer<Session>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 Log.d(TAG, "onSubscribe: called");

@@ -1,5 +1,7 @@
 package com.wodu.mobile.rpg_backpack.utilities;
 
+import com.wodu.mobile.rpg_backpack.ErrorHandlingAdapter;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -28,6 +30,7 @@ public class RestAdapter {
         return new Retrofit.Builder()
                 .baseUrl("https://wodu-rpg-backpack.herokuapp.com/")
                 .client(clientBuilder.build())
+                .addCallAdapterFactory(new ErrorHandlingAdapter.ErrorHandlingCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
