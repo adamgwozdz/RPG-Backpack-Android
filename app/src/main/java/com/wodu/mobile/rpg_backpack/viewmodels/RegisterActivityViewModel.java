@@ -48,7 +48,9 @@ public class RegisterActivityViewModel extends ViewModel {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                Log.d(TAG, "onError: " + e);
+                String error = e.getMessage();
+                registrationMutableLiveData.postValue(error.trim());
+                Log.d(TAG, "onError: " + error);
             }
 
             @Override

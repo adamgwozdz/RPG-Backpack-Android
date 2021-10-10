@@ -1,9 +1,9 @@
 package com.wodu.mobile.rpg_backpack.views;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +13,6 @@ import android.widget.Toast;
 
 import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
-import com.wodu.mobile.rpg_backpack.databinding.ActivityLoginBinding;
-import com.wodu.mobile.rpg_backpack.databinding.ActivityMainBinding;
 import com.wodu.mobile.rpg_backpack.viewmodels.LoginActivityViewModel;
 
 public class LoginActivity extends AppCompatActivity {
@@ -42,9 +40,10 @@ public class LoginActivity extends AppCompatActivity {
             viewModel.login(email, password).observe(this, new Observer<String>() {
                 @Override
                 public void onChanged(String response) {
-                    if (response.length() == 191)
+                    if (response.contains("eyJhbGciOiJIUzI1NiJ9.")) {
+                        loadingSpinner();
                         RedirectToMainActivity();
-                    else if (response.equals("HTTP 401")) {
+                    } else if (response.equals("HTTP 401")) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -53,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    viewModel.login(email, password).removeObserver(this);
                 }
             });
         });
@@ -72,7 +70,28 @@ public class LoginActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
     }
 
+    private void loadingSpinner() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ProgressDialog nDialog;
+                nDialog = new ProgressDialog(LoginActivity.this);
+                nDialog.setMessage("Loading..");
+                nDialog.setTitle("Get Data");
+                nDialog.setIndeterminate(false);
+                nDialog.setCancelable(true);
+                nDialog.show();
+            }
+        });
+    }
+
     private void revokeToken() {
         Application.getInstance().setToken("");
+    }
+
+    private void reloadActivity() {
+        finish();
+        startActivity(getIntent());
+        overridePendingTransition(0,0);
     }
 }

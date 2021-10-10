@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.wodu.mobile.rpg_backpack.ErrorHandlingAdapter;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.repositories.SessionRepository;
 
