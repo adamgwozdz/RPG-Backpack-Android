@@ -99,6 +99,7 @@
         android:paddingVertical="@dimen/_6sdp"
         android:text="@string/sign_up_label"
         android:textSize="@dimen/_12sdp"
+        android:backgroundTint="@color/green_3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_register_password_field_layout" />

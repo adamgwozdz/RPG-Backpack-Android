@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.viewmodels.LoginActivityViewModel;
@@ -47,7 +48,8 @@ public class LoginActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(LoginActivity.this, "Incorrect E-mail or Password", Toast.LENGTH_SHORT).show();
+                                Snackbar.make(view, "Incorrect E-mail or Password", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
                                 Log.d(TAG, "UNAUTHORIZED");
                             }
                         });

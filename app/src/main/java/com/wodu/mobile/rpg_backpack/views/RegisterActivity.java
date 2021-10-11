@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.viewmodels.RegisterActivityViewModel;
@@ -33,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
         EditText passwordEditText = findViewById(R.id.activity_register_password_field_edit_text);
         Button registerButton = findViewById(R.id.activity_register_signup_button);
 
-        registerButton.setOnClickListener(v -> {
+        registerButton.setOnClickListener(view -> {
             String email = emailEditText.getText().toString().trim();
             String name = nameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
@@ -48,7 +49,8 @@ public class RegisterActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(RegisterActivity.this, "Can't create account with provided data", Toast.LENGTH_SHORT).show();
+                                Snackbar.make(view, "Can't create account with provided data", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
                                 Log.d(TAG, "UNAUTHORIZED");
                             }
                         });

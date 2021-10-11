@@ -6,6 +6,8 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="dummy">Dummy</string>
+    <string name="dummy_number">5</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -16,4 +18,8 @@
     <string name="sign_up_label">Sign Up</string>
     <string name="forgot_password_label"><u>Forgot Password</u></string>
     <string name="username_label">Username</string>
+    <string name="email_verified">E-mail verified</string>
+    <string name="email_unverified">E-mail not verified</string>
+    <string name="create_session">Create session</string>
+    <string name="join_session">Join session</string>
 </resources>
