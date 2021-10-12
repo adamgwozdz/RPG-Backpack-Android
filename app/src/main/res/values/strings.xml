@@ -22,4 +22,6 @@
     <string name="email_unverified">E-mail not verified</string>
     <string name="create_session">Create session</string>
     <string name="join_session">Join session</string>
+    <string name="logout">Logout</string>
+    <string name="buy_subscription">Buy subscription</string>
 </resources>

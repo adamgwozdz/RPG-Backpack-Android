@@ -1,6 +1,7 @@
 package com.wodu.mobile.rpg_backpack.viewmodels;
 
-import android.content.res.Resources;
+import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
@@ -10,12 +11,14 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.repositories.SessionRepository;
 import com.wodu.mobile.rpg_backpack.repositories.UserRepository;
+import com.wodu.mobile.rpg_backpack.views.CreateSessionActivity;
+import com.wodu.mobile.rpg_backpack.views.LoginActivity;
+import com.wodu.mobile.rpg_backpack.views.MainActivity;
 
 import java.util.List;
 
@@ -35,13 +38,11 @@ public class MainActivityViewModel extends ViewModel {
     private final MutableLiveData<Session> sessionMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<Session>> sessionsListMutableLiveData = new MutableLiveData<>();
 
-    private boolean isFabOpen = false;
-
     public MainActivityViewModel() {
     }
 
-    public MutableLiveData<List<Session>> getSessions(boolean onlyCurrentUser) {
-        if (onlyCurrentUser)
+    public MutableLiveData<List<Session>> getSessions(boolean forCurrentUser) {
+        if (forCurrentUser)
             loadUserSessionsData();
         else
             loadSessionsData();
@@ -54,8 +55,8 @@ public class MainActivityViewModel extends ViewModel {
         return sessionMutableLiveData;
     }
 
-    private void loadSessionsData() {
-        sessionRepository.getSessions().subscribe(new Observer<List<Session>>() {
+    private void loadUserSessionsData() {
+        sessionRepository.getUserSessions().subscribe(new Observer<List<Session>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposables.add(d);
@@ -77,8 +78,8 @@ public class MainActivityViewModel extends ViewModel {
         });
     }
 
-    private void loadUserSessionsData() {
-        sessionRepository.getUserSessions().subscribe(new Observer<List<Session>>() {
+    private void loadSessionsData() {
+        sessionRepository.getSessions().subscribe(new Observer<List<Session>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposables.add(d);
@@ -125,10 +126,6 @@ public class MainActivityViewModel extends ViewModel {
         });
     }
 
-//    private void loadCurrentUserData() {
-//        userRepository.
-//    }
-
     public void scaleTextSize(TextView textView) {
         int length = textView.length();
         if (length <= 10) {
@@ -154,41 +151,18 @@ public class MainActivityViewModel extends ViewModel {
             textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
     }
 
-//    public boolean setButton(Resources resources, FloatingActionButton fabMain,
-//                          FloatingActionButton fabCreate, FloatingActionButton fabJoin) {
-//        fabMain.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!isFabOpen) {
-//                    showFabMenu(resources, fabCreate, fabJoin);
-//                } else {
-//                    closeFabMenu(fabCreate, fabJoin);
-//                }
-//            }
-//        });
-//        return isFabOpen;
-//    }
-//
-//    private void showFabMenu(Resources resources, FloatingActionButton fabCreate, FloatingActionButton fabJoin) {
-//        isFabOpen = true;
-//        fabCreate.animate().translationY(-resources.getDimension(R.dimen._55sdp));
-//        fabJoin.animate().translationY(-resources.getDimension(R.dimen._105sdp));
-//    }
-//
-//    private void closeFabMenu(FloatingActionButton fabCreate, FloatingActionButton fabJoin) {
-//        isFabOpen = false;
-//        fabCreate.animate().translationY(0);
-//        fabJoin.animate().translationY(0);
-//    }
-
     public void setupFloatingActionButtons(List<ExtendedFloatingActionButton> buttonList) {
         float translationY = 100f;
         final Boolean[] menuOpen = {false};
 
         buttonList.get(1).setAlpha(0f);
         buttonList.get(2).setAlpha(0f);
+        buttonList.get(3).setAlpha(0f);
+        buttonList.get(4).setAlpha(0f);
         buttonList.get(1).setTranslationY(translationY);
         buttonList.get(2).setTranslationY(translationY);
+        buttonList.get(3).setTranslationY(translationY);
+        buttonList.get(4).setTranslationY(translationY);
 
         buttonList.get(0).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,7 +177,7 @@ public class MainActivityViewModel extends ViewModel {
         buttonList.get(1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: Create");
+                Log.d(TAG, "onClick: Join");
                 menuOpen[0] = closeMenu(menuOpen[0], buttonList, translationY);
             }
         });
@@ -211,8 +185,29 @@ public class MainActivityViewModel extends ViewModel {
         buttonList.get(2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: Join");
+                Log.d(TAG, "onClick: Create");
+                Intent intent = new Intent(view.getContext(), CreateSessionActivity.class);
+                view.getContext().startActivity(intent);
+                ((Activity) view.getContext()).overridePendingTransition(0, 0);
+            }
+        });
+
+        buttonList.get(3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Subscribe");
                 menuOpen[0] = closeMenu(menuOpen[0], buttonList, translationY);
+            }
+        });
+
+        buttonList.get(4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Logout");
+                Application.getInstance().resetToken();
+                Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                view.getContext().startActivity(intent);
+                ((Activity) view.getContext()).overridePendingTransition(0, 0);
             }
         });
     }
@@ -220,8 +215,15 @@ public class MainActivityViewModel extends ViewModel {
     private Boolean openMenu(boolean menuOpen, List<ExtendedFloatingActionButton> buttonList) {
         OvershootInterpolator interpolator = new OvershootInterpolator();
         buttonList.get(0).setIconResource(R.drawable.ic_arrow_down);
+        buttonList.get(1).setVisibility(View.VISIBLE);
+        buttonList.get(2).setVisibility(View.VISIBLE);
+        buttonList.get(3).setVisibility(View.VISIBLE);
+        buttonList.get(4).setVisibility(View.VISIBLE);
+
         buttonList.get(1).animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         buttonList.get(2).animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
+        buttonList.get(3).animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
+        buttonList.get(4).animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         return !menuOpen;
     }
 
@@ -230,6 +232,13 @@ public class MainActivityViewModel extends ViewModel {
         buttonList.get(0).setIconResource(R.drawable.ic_arrow_up);
         buttonList.get(1).animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
         buttonList.get(2).animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
+        buttonList.get(3).animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
+        buttonList.get(4).animate().translationY(translationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
+
+        buttonList.get(1).setVisibility(View.GONE);
+        buttonList.get(2).setVisibility(View.GONE);
+        buttonList.get(3).setVisibility(View.GONE);
+        buttonList.get(4).setVisibility(View.GONE);
         return !menuOpen;
     }
 

@@ -97,4 +97,8 @@ public class Application extends android.app.Application {
         this.token = token;
         setUserData(token);
     }
+
+    public void resetToken() {
+        this.token = "";
+    }
 }

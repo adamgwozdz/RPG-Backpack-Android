@@ -1,13 +1,13 @@
 package com.wodu.mobile.rpg_backpack.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.viewmodels.MainActivityViewModel;
@@ -20,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
 
     private final MainActivityViewModel viewModel = new MainActivityViewModel();
-    private boolean isFabOpen;
+
+    private int sessionCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,33 +31,44 @@ public class MainActivity extends AppCompatActivity {
         initializeHeader();
         initializeButtons();
 
-        viewModel.getSessions(true).observe(this, new Observer<List<Session>>() {
+        // Set session count
+        viewModel.getSessions(true).observe(this, new androidx.lifecycle.Observer<List<Session>>() {
             @Override
-            public void onChanged(List<Session> session) {
-//                Log.d(TAG, "Sessions: " + session.get(0).toString());
+            public void onChanged(List<Session> sessions) {
+                Log.d(TAG, "onChanged: " + sessions.size());
+                sessionCount = sessions.size();
+                initializeHeader();
             }
         });
     }
 
     private void initializeHeader() {
         TextView usernameTextView = findViewById(R.id.activity_main_user_name);
-        TextView emailConfirmationMessage = findViewById(R.id.activity_main_email_confirmation_message);
+        TextView emailConfirmationMessageTextView = findViewById(R.id.activity_main_email_confirmation_message);
+        TextView sessionCountTextView = findViewById(R.id.activity_main_sessions_count);
 
         viewModel.setUserName(usernameTextView);
         viewModel.scaleTextSize(usernameTextView);
         viewModel.setSubscriptionIconVisibility(usernameTextView);
 
-        viewModel.setEmailConfirmationMessage(emailConfirmationMessage);
+        viewModel.setEmailConfirmationMessage(emailConfirmationMessageTextView);
+
+        sessionCountTextView.setText(String.valueOf(sessionCount));
     }
 
     private void initializeButtons() {
         ExtendedFloatingActionButton fabMain = findViewById(R.id.activity_main_action_button);
+        ExtendedFloatingActionButton fabLogout = findViewById(R.id.activity_main_action_button_logout);
+        ExtendedFloatingActionButton fabSubscribe = findViewById(R.id.activity_main_action_button_subscription);
         ExtendedFloatingActionButton fabCreate = findViewById(R.id.activity_main_action_button_create);
         ExtendedFloatingActionButton fabJoin = findViewById(R.id.activity_main_action_button_join);
+
         List<ExtendedFloatingActionButton> buttonList = new LinkedList<>();
         buttonList.add(fabMain);
-        buttonList.add(fabCreate);
         buttonList.add(fabJoin);
+        buttonList.add(fabCreate);
+        buttonList.add(fabSubscribe);
+        buttonList.add(fabLogout);
         viewModel.setupFloatingActionButtons(buttonList);
     }
 

@@ -64,9 +64,9 @@
                 android:id="@+id/activity_main_email_confirmation_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_1sdp"
                 android:text="E-mail not verified"
-                android:textSize="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_1sdp"/>
+                android:textSize="@dimen/_10sdp" />
 
         </LinearLayout>
 
@@ -80,7 +80,7 @@
             android:background="@color/green_3"
             android:elevation="8dp"
             android:gravity="center"
-            android:text="@string/dummy_number"
+            android:text="0"
             android:textSize="@dimen/_24sdp" />
 
         <View
@@ -118,13 +118,33 @@
             android:orientation="vertical">
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/activity_main_action_button_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="@dimen/_5sdp"
+                android:text="@string/logout"
+                android:visibility="gone"
+                app:icon="@drawable/ic_logout" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/activity_main_action_button_subscription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="@dimen/_5sdp"
+                android:text="@string/buy_subscription"
+                android:visibility="gone"
+                app:icon="@drawable/ic_dollar" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/activity_main_action_button_create"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
                 android:layout_margin="@dimen/_5sdp"
                 android:text="@string/create_session"
-                app:fabSize="mini"
+                android:visibility="gone"
                 app:icon="@drawable/ic_add" />
 
 
@@ -135,7 +155,7 @@
                 android:layout_gravity="end|bottom"
                 android:layout_margin="@dimen/_5sdp"
                 android:text="@string/join_session"
-                app:fabSize="mini"
+                android:visibility="gone"
                 app:icon="@drawable/ic_key" />
 
 
@@ -148,8 +168,6 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:text=""
-                app:fabSize="normal"
                 app:icon="@drawable/ic_arrow_up" />
         </LinearLayout>
     </FrameLayout>
