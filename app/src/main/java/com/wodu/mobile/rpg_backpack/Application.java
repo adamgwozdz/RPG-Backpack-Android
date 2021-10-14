@@ -3,11 +3,18 @@ package com.wodu.mobile.rpg_backpack;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.wodu.mobile.rpg_backpack.models.Session;
+
 import java.sql.Timestamp;
 
 public class Application extends android.app.Application {
 
-    private final String TAG = "Application";
+    private final String TAG = "ApplicationTag";
     private static Application instance;
     private String token = "";
     private String userId = "";

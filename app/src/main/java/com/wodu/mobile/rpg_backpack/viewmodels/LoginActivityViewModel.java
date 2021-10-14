@@ -1,12 +1,15 @@
 package com.wodu.mobile.rpg_backpack.viewmodels;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.gson.JsonObject;
 import com.wodu.mobile.rpg_backpack.Application;
+import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.repositories.UserRepository;
 import com.wodu.mobile.rpg_backpack.utilities.Utilities;
 

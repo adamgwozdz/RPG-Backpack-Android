@@ -32,7 +32,6 @@ public class MainActivityViewModel extends ViewModel {
     private final String TAG = "MainActivityViewModel";
 
     private final SessionRepository sessionRepository = SessionRepository.getInstance();
-    private final UserRepository userRepository = UserRepository.getInstance();
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     private final MutableLiveData<Session> sessionMutableLiveData = new MutableLiveData<>();

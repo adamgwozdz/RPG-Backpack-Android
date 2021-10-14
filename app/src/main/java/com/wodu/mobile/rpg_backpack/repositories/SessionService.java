@@ -1,12 +1,16 @@
 package com.wodu.mobile.rpg_backpack.repositories;
 
+import com.google.gson.JsonObject;
 import com.wodu.mobile.rpg_backpack.models.Session;
 
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface SessionService {
@@ -25,5 +29,12 @@ public interface SessionService {
     Observable<Session> getSession(
             @Header("Authorization") String token,
             @Path("id") long userId
+    );
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/app/session/sessions")
+    Observable<JsonObject> createSession(
+            @Header("Authorization") String token,
+            @Body JsonObject jsonBody
     );
 }
