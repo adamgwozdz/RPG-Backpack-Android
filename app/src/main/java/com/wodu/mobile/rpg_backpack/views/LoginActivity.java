@@ -42,21 +42,21 @@ public class LoginActivity extends AppCompatActivity {
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
-            AndroidUtilities.loadingSpinner(loadingProgressBar, false);
+            AndroidUtilities.loadingSpinner(loadingProgressBar, true);
             viewModel.login(email, password).observe(this, new Observer<String>() {
                 @Override
                 public void onChanged(String response) {
                     if (response.contains("eyJhbGciOiJIUzI1NiJ9.")) {
                         RedirectToMainActivity();
                     } else if (response.equals("HTTP 401")) {
-                        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
+                        AndroidUtilities.loadingSpinner(loadingProgressBar, false);
                         Snackbar.make(view, "Incorrect E-mail or Password", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         Log.d(TAG, "UNAUTHORIZED");
                     }
                 }
             });
-            AndroidUtilities.loadingSpinner(loadingProgressBar, false);
+            AndroidUtilities.loadingSpinner(loadingProgressBar, true);
         });
 
         registerButton.setOnClickListener(view ->

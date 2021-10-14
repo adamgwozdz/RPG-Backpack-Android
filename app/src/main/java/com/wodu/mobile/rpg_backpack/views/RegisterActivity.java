@@ -37,12 +37,12 @@ public class RegisterActivity extends AppCompatActivity {
         Button registerButton = findViewById(R.id.activity_register_signup_button);
 
         registerButton.setOnClickListener(view -> {
-            ProgressBar loadingProgressBar = findViewById(R.id.activity_login_loading_spinner);
+            ProgressBar loadingProgressBar = findViewById(R.id.activity_register_loading_spinner);
             String email = emailEditText.getText().toString().trim();
             String name = nameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
-            AndroidUtilities.loadingSpinner(loadingProgressBar, false);
+            AndroidUtilities.loadingSpinner(loadingProgressBar, true);
             viewModel.register(email, name, password, false).observe(this, new Observer<String>() {
                 @Override
                 public void onChanged(String response) {
@@ -50,14 +50,14 @@ public class RegisterActivity extends AppCompatActivity {
                         loadingSpinner();
                         RedirectToMainActivity();
                     } else if (response.equals("HTTP 401")) {
-                        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
+                        AndroidUtilities.loadingSpinner(loadingProgressBar, false);
                         Snackbar.make(view, "Can't create account with provided data", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         Log.d(TAG, "UNAUTHORIZED");
                     }
                 }
             });
-            AndroidUtilities.loadingSpinner(loadingProgressBar, false);
+            AndroidUtilities.loadingSpinner(loadingProgressBar, true);
         });
     }
 

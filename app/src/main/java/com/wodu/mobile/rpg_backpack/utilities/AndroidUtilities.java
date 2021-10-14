@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class AndroidUtilities extends AppCompatActivity {
 
-    public static void loadingSpinner(ProgressBar progressBar, boolean hide) {
-        if (hide)
-            progressBar.setVisibility(View.GONE);
-        else
+    public static void loadingSpinner(ProgressBar progressBar, boolean show) {
+        if (show)
             progressBar.setVisibility(View.VISIBLE);
+        else
+            progressBar.setVisibility(View.GONE);
     }
 }

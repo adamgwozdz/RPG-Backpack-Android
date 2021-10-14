@@ -24,4 +24,6 @@
     <string name="join_session">Join session</string>
     <string name="logout">Logout</string>
     <string name="buy_subscription">Buy subscription</string>
+    <string name="name">Name</string>
+    <string name="create">Create</string>
 </resources>

@@ -43,11 +43,9 @@ public class CreateSessionActivityViewModel extends ViewModel {
 
             @Override
             public void onNext(@NonNull JsonObject sessionResponse) {
-                Log.d(TAG, "Response body: " + sessionResponse.toString());
                 Gson gson = new Gson();
                 Session session = gson.fromJson(sessionResponse, Session.class);
-                Log.d(TAG, "onNext: " + session.getName());
-                //sessionMutableLiveData.postValue(session);
+                sessionMutableLiveData.postValue(session);
             }
 
             @Override
@@ -59,5 +57,12 @@ public class CreateSessionActivityViewModel extends ViewModel {
             public void onComplete() {
             }
         });
+    }
+
+    public int getMaxAttributesNumber(boolean subscribed) {
+        if (subscribed)
+            return 20;
+        else
+            return 10;
     }
 }
