@@ -1,7 +1,5 @@
 package com.wodu.mobile.rpg_backpack.repositories;
 
-import android.util.Log;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.wodu.mobile.rpg_backpack.Application;
@@ -48,10 +46,10 @@ public class SessionRepository {
 
     public Observable<JsonObject> createSession(String name, String password, Integer maxAttributes, String image) {
         sessionService = RestAdapter.getAdapter().create(SessionService.class);
-        return sessionService.createSession(Application.getInstance().getToken(), createCreateSessionBody(name, password, maxAttributes, image));
+        return sessionService.createSession(Application.getInstance().getToken(), createSessionBody(name, password, maxAttributes, image));
     }
 
-    private JsonObject createCreateSessionBody(String name, String password, Integer maxAttributes, String image) {
+    private JsonObject createSessionBody(String name, String password, Integer maxAttributes, String image) {
         JsonObject gsonObject = new JsonObject();
         try {
             JSONObject jsonObj = new JSONObject();

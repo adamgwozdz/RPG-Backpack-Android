@@ -1,21 +1,31 @@
 package com.wodu.mobile.rpg_backpack.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.sql.Timestamp;
 
 public class Character {
 
-    private Integer characterId;
+    @SerializedName(value = "characterID")
+    private Integer characterID;
+    @SerializedName(value = "userID")
     private Integer userID;
+    @SerializedName(value = "sessionID")
     private Integer sessionID;
+    @SerializedName(value = "name")
     private String name;
+    @SerializedName(value = "gameMaster")
     private Boolean gameMaster;
+    @SerializedName(value = "dateJoined")
     private Timestamp dateJoined;
+    @SerializedName(value = "dateLeft")
     private Timestamp dateLeft;
+    @SerializedName(value = "image")
     private String image;
 
-    public Character(Integer characterId, Integer userID, Integer sessionID, String name,
+    public Character(Integer characterID, Integer userID, Integer sessionID, String name,
                      Boolean gameMaster, Timestamp dateJoined, Timestamp dateLeft, String image) {
-        this.characterId = characterId;
+        this.characterID = characterID;
         this.userID = userID;
         this.sessionID = sessionID;
         this.name = name;
@@ -28,7 +38,7 @@ public class Character {
     @Override
     public String toString() {
         return "Character{" +
-                "characterId=" + characterId +
+                "characterID=" + characterID +
                 ", userID=" + userID +
                 ", sessionID=" + sessionID +
                 ", name='" + name + '\'' +
@@ -39,8 +49,8 @@ public class Character {
                 '}';
     }
 
-    public Integer getCharacterId() {
-        return characterId;
+    public Integer getCharacterID() {
+        return characterID;
     }
 
     public Integer getUserID() {

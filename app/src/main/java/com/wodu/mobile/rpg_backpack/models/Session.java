@@ -1,22 +1,32 @@
 package com.wodu.mobile.rpg_backpack.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.sql.Timestamp;
 
 public class Session {
 
-    private Integer sessionId;
+    @SerializedName(value = "sessionId")
+    private Integer sessionID;
+    @SerializedName(value = "name")
     private String name;
+    @SerializedName(value = "password")
     private String password;
+    @SerializedName(value = "maxAttributes")
     private Integer maxAttributes;
+    @SerializedName(value = "dateCreated")
     private Timestamp dateCreated;
+    @SerializedName(value = "dateModified")
     private Timestamp dateModified;
+    @SerializedName(value = "dateRemoved")
     private Timestamp dateRemoved;
+    @SerializedName(value = "image")
     private String image;
 
-    public Session(Integer sessionId, String name, String password, Integer maxAttributes,
+    public Session(Integer sessionID, String name, String password, Integer maxAttributes,
                    Timestamp dateCreated, Timestamp dateModified, Timestamp dateRemoved,
                    String image) {
-        this.sessionId = sessionId;
+        this.sessionID = sessionID;
         this.name = name;
         this.password = password;
         this.maxAttributes = maxAttributes;
@@ -29,7 +39,7 @@ public class Session {
     @Override
     public String toString() {
         return "Session{" +
-                "sessionId=" + sessionId +
+                "sessionID=" + sessionID +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", maxAttributes=" + maxAttributes +
@@ -40,8 +50,8 @@ public class Session {
                 '}';
     }
 
-    public Integer getSessionId() {
-        return sessionId;
+    public Integer getSessionID() {
+        return sessionID;
     }
 
     public String getName() {
@@ -70,5 +80,16 @@ public class Session {
 
     public String getImage() {
         return image;
+    }
+
+    public enum USER_TIERS {
+        NOT_SUBSCRIBED(5),
+        SUBSCRIBED(20);
+
+        public int maxAttributes;
+
+        USER_TIERS(int maxAttributes) {
+            this.maxAttributes = maxAttributes;
+        }
     }
 }

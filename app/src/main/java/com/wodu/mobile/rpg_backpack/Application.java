@@ -1,30 +1,18 @@
 package com.wodu.mobile.rpg_backpack;
 
-import android.util.Log;
-import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.wodu.mobile.rpg_backpack.models.Session;
-
-import java.sql.Timestamp;
-
 public class Application extends android.app.Application {
 
     private final String TAG = "ApplicationTag";
     private static Application instance;
-    private String token = "";
-    private String userId = "";
-    private String statusId = "";
-    private String email = "";
-    private String name = "";
-    private Boolean emailVerified = false;
-    private Boolean subscription = false;
-    private Boolean admin = false;
-    private long dateCreated = 0;
+    private String token;
+    private Integer userID;
+    private Integer statusID;
+    private String email;
+    private String name;
+    private Boolean emailVerified;
+    private Boolean subscription;
+    private Boolean admin;
+    private long dateCreated;
 
 
     @Override
@@ -43,14 +31,14 @@ public class Application extends android.app.Application {
     private void setUserData(String token) {
         try {
             String body = JWTUtils.decoded(token);
-            userId = getBodyElement(body, 2);
-            statusId = getBodyElement(body, 3);
-            email = getBodyElement(body, 4);
-            name = getBodyElement(body, 5);
-            emailVerified = getBodyElement(body, 6).equals("true");
-            subscription = getBodyElement(body, 7).equals("true");
-            admin = getBodyElement(body, 8).equals("true");
-            dateCreated = Long.parseLong(getBodyElement(body, 9));
+            userID = getBodyIntegerElement(body, 2);
+            statusID = getBodyIntegerElement(body, 3);
+            email = getBodyStringElement(body, 4);
+            name = getBodyStringElement(body, 5);
+            emailVerified = getBodyStringElement(body, 6).equals("true");
+            subscription = getBodyStringElement(body, 7).equals("true");
+            admin = getBodyStringElement(body, 8).equals("true");
+            dateCreated = Long.parseLong(getBodyStringElement(body, 9));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,21 +47,26 @@ public class Application extends android.app.Application {
     //Example
     //{"iat":1633971064,"exp":1633985464,"userId":148,"statusId":1,"email":"ap1@qa.qa","name":"ap1",
     //"emailVerified":false,"subscription":false,"admin":false,"dateCreated":1633772428051}
-    private String getBodyElement(String body, int i) {
+    private String getBodyStringElement(String body, int i) {
         return body.split(",")[i].split(":")[1].replace("\"", "")
                 .replace("{", "").replace("}", "");
+    }
+
+    private Integer getBodyIntegerElement(String body, int i) {
+        return Integer.valueOf(body.split(",")[i].split(":")[1].replace("\"", "")
+                .replace("{", "").replace("}", ""));
     }
 
     public String getToken() {
         return "Bearer " + token;
     }
 
-    public String getUserId() {
-        return userId;
+    public Integer getUserID() {
+        return userID;
     }
 
-    public String getStatusId() {
-        return statusId;
+    public Integer getStatusID() {
+        return statusID;
     }
 
     public String getEmail() {

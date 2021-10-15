@@ -1,29 +1,44 @@
 package com.wodu.mobile.rpg_backpack.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.sql.Timestamp;
 
 public class User {
 
-    private Integer userId;
-    private Integer statusId;
+    @SerializedName(value = "userID")
+    private Integer userID;
+    @SerializedName(value = "statusID")
+    private Integer statusID;
+    @SerializedName(value = "email")
     private String email;
+    @SerializedName(value = "name")
     private String name;
+    @SerializedName(value = "password")
     private String password;
+    @SerializedName(value = "emailVerified")
     private Boolean emailVerified;
+    @SerializedName(value = "subscription")
     private Boolean subscription;
+    @SerializedName(value = "dateCreated")
     private Timestamp dateCreated;
+    @SerializedName(value = "dateModified")
     private Timestamp dateModified;
+    @SerializedName(value = "dateRemoved")
     private Timestamp dateRemoved;
+    @SerializedName(value = "dateSubscribed")
     private Timestamp dateSubscribed;
+    @SerializedName(value = "admin")
     private Boolean admin;
+    @SerializedName(value = "profileImage")
     private String profileImage;
 
-    public User(Integer userId, Integer statusId, String email, String name, String password,
+    public User(Integer userID, Integer statusID, String email, String name, String password,
                 Boolean emailVerified, Boolean subscription, Timestamp dateCreated,
                 Timestamp dateModified, Timestamp dateRemoved, Timestamp dateSubscribed,
                 Boolean admin, String profileImage) {
-        this.userId = userId;
-        this.statusId = statusId;
+        this.userID = userID;
+        this.statusID = statusID;
         this.email = email;
         this.name = name;
         this.password = password;
@@ -40,8 +55,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
-                ", statusId=" + statusId +
+                "userId=" + userID +
+                ", statusID=" + statusID +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
@@ -56,12 +71,12 @@ public class User {
                 '}';
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUserID() {
+        return userID;
     }
 
-    public Integer getStatusId() {
-        return statusId;
+    public Integer getStatusID() {
+        return statusID;
     }
 
     public String getEmail() {
