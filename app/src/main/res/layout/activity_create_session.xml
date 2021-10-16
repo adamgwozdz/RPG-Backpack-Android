@@ -31,15 +31,15 @@
     </ProgressBar>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_create_session_name_field_layout"
+        android:id="@+id/activity_create_session_name_field_text_input_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_32sdp"
         android:layout_marginTop="@dimen/_12sdp"
-        android:drawablePadding="@dimen/_4sdp"
         android:hint="@string/name"
-        app:layout_constraintBottom_toTopOf="@+id/activity_create_session_password_field_layout"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/activity_create_session_password_field_text_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_create_session_image_textview"
@@ -54,18 +54,17 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_create_session_password_field_layout"
+        android:id="@+id/activity_create_session_password_field_text_input_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_32sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:drawablePadding="@dimen/_4sdp"
         android:hint="@string/password_label"
+        app:errorEnabled="true"
         app:passwordToggleEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_session_name_field_layout"
+        app:layout_constraintTop_toBottomOf="@+id/activity_create_session_name_field_text_input_layout"
         app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -80,7 +79,6 @@
         android:id="@+id/activity_create_session_create_button"
         android:layout_width="@dimen/_250sdp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
         android:paddingHorizontal="@dimen/_20sdp"
         android:paddingVertical="@dimen/_6sdp"
         android:text="@string/create"
@@ -88,6 +86,6 @@
         android:backgroundTint="@color/green_3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_session_password_field_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_create_session_password_field_text_input_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

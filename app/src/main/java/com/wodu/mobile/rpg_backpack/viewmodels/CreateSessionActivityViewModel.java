@@ -1,16 +1,21 @@
 package com.wodu.mobile.rpg_backpack.viewmodels;
 
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.wodu.mobile.rpg_backpack.models.Character;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.repositories.CharacterRepository;
 import com.wodu.mobile.rpg_backpack.repositories.SessionRepository;
+import com.wodu.mobile.rpg_backpack.utilities.FIELDS;
+import com.wodu.mobile.rpg_backpack.utilities.TextValidator;
 
 import java.util.List;
 
@@ -97,6 +102,35 @@ public class CreateSessionActivityViewModel extends ViewModel {
             @Override
             public void onComplete() {
 
+            }
+        });
+    }
+
+    public void validateInput(TextInputLayout nameTextInputLayout, TextInputLayout passwordTextInputLayout,
+                              EditText nameEditText, EditText passwordEditText) {
+        nameEditText.addTextChangedListener(new TextValidator(nameEditText) {
+            @Override
+            public void validate(TextView textView, String text) {
+                if (text.length() < FIELDS.SESSION_NAME.minLength) {
+                    nameTextInputLayout.setError("Session name is too short");
+                } else if (text.length() > FIELDS.SESSION_NAME.maxLength) {
+                    nameTextInputLayout.setError("Session name is too long");
+                } else {
+                    nameTextInputLayout.setError(null);
+                }
+            }
+        });
+
+        passwordEditText.addTextChangedListener(new TextValidator(passwordEditText) {
+            @Override
+            public void validate(TextView textView, String text) {
+                if (text.length() < FIELDS.SESSION_PASSWORD.minLength) {
+                    passwordTextInputLayout.setError("Password is too short");
+                } else if (text.length() > FIELDS.SESSION_PASSWORD.maxLength) {
+                    passwordTextInputLayout.setError("Password is too long");
+                } else {
+                    passwordTextInputLayout.setError(null);
+                }
             }
         });
     }
