@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.wodu.mobile.rpg_backpack.Application;
@@ -150,7 +151,7 @@ public class MainActivityViewModel extends ViewModel {
             textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
     }
 
-    public void setupFloatingActionButtons(List<ExtendedFloatingActionButton> buttonList) {
+    public void setupFloatingActionButtons(List<ExtendedFloatingActionButton> buttonList, RecyclerView recyclerView) {
         float translationY = 100f;
         final Boolean[] menuOpen = {false};
 
@@ -166,10 +167,14 @@ public class MainActivityViewModel extends ViewModel {
         buttonList.get(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (menuOpen[0])
+                if (menuOpen[0]) {
                     menuOpen[0] = closeMenu(menuOpen[0], buttonList, translationY);
-                else
+                    recyclerView.setAlpha(1f);
+                }
+                else {
                     menuOpen[0] = openMenu(menuOpen[0], buttonList);
+                    recyclerView.setAlpha(0.15f);
+                }
             }
         });
 

@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         ExtendedFloatingActionButton fabSubscribe = findViewById(R.id.activity_main_action_button_subscription);
         ExtendedFloatingActionButton fabCreate = findViewById(R.id.activity_main_action_button_create);
         ExtendedFloatingActionButton fabJoin = findViewById(R.id.activity_main_action_button_join);
+        RecyclerView recyclerView = findViewById(R.id.activity_main_body_sessions_recycler_view);
 
         List<ExtendedFloatingActionButton> buttonList = new LinkedList<>();
         buttonList.add(fabMain);
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         buttonList.add(fabCreate);
         buttonList.add(fabSubscribe);
         buttonList.add(fabLogout);
-        viewModel.setupFloatingActionButtons(buttonList);
+        viewModel.setupFloatingActionButtons(buttonList, recyclerView);
     }
 
     private void setupSessionsList() {
