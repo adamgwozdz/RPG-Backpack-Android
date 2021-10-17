@@ -5,11 +5,12 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
+import com.wodu.mobile.rpg_backpack.adapters.SessionsListAdapter;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.viewmodels.MainActivityViewModel;
 
@@ -22,28 +23,30 @@ public class MainActivity extends AppCompatActivity {
 
     private final MainActivityViewModel viewModel = new MainActivityViewModel();
 
-    private int sessionCount = 0;
+    private List<Session> sessionList;
+    private int sessionCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initializeHeader();
-        initializeButtons();
+        setupHeader();
+        setupButtons();
 
-        // Set session count
         viewModel.getSessions(true).observe(this, new androidx.lifecycle.Observer<List<Session>>() {
             @Override
             public void onChanged(List<Session> sessions) {
                 Log.d(TAG, "onChanged: " + sessions.size());
+                sessionList = sessions;
                 sessionCount = sessions.size();
-                initializeHeader();
+                setupHeader();
+                setupSessionsList();
             }
         });
     }
 
-    private void initializeHeader() {
+    private void setupHeader() {
         TextView usernameTextView = findViewById(R.id.activity_main_user_name);
         TextView emailConfirmationMessageTextView = findViewById(R.id.activity_main_email_confirmation_message);
         TextView sessionCountTextView = findViewById(R.id.activity_main_sessions_count);
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         sessionCountTextView.setText(String.valueOf(sessionCount));
     }
 
-    private void initializeButtons() {
+    private void setupButtons() {
         ExtendedFloatingActionButton fabMain = findViewById(R.id.activity_main_action_button);
         ExtendedFloatingActionButton fabLogout = findViewById(R.id.activity_main_action_button_logout);
         ExtendedFloatingActionButton fabSubscribe = findViewById(R.id.activity_main_action_button_subscription);
@@ -71,6 +74,14 @@ public class MainActivity extends AppCompatActivity {
         buttonList.add(fabSubscribe);
         buttonList.add(fabLogout);
         viewModel.setupFloatingActionButtons(buttonList);
+    }
+
+    private void setupSessionsList() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        RecyclerView recyclerView = findViewById(R.id.activity_main_body_sessions_recycler_view);
+        recyclerView.setLayoutManager(layoutManager);
+        SessionsListAdapter adapter = new SessionsListAdapter(sessionList);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override

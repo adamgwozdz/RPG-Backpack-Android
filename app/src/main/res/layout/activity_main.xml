@@ -100,7 +100,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_8sdp"
         android:layout_weight="0.88">
 
         <androidx.recyclerview.widget.RecyclerView

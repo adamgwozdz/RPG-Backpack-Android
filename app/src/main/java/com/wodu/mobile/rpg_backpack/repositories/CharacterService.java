@@ -18,4 +18,11 @@ public interface CharacterService {
             @Path(value = "sessionID") String sessionID,
             @Body JsonObject jsonBody
     );
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/app/session/characters/{sessionID}")
+    Observable<JsonObject> getSession(
+            @Header("Authorization") String token,
+            @Path(value = "sessionID") String sessionID
+    );
 }

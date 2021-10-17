@@ -95,14 +95,19 @@ public class CreateSessionActivity extends AppCompatActivity {
     private void createCharacter(Session session) {
         AndroidUtilities.loadingSpinner(loadingProgressBar, true);
         viewModel.createCharacter(Application.getInstance().getUserID(), session.getSessionID(),
-                "Edit name", true, null).observe(this, new Observer<Character>() {
+                "Game master", true, null).observe(this, new Observer<Character>() {
             @Override
             public void onChanged(Character character) {
-
-                AndroidUtilities.loadingSpinner(loadingProgressBar, false);
+                redirectToSessionActivity();
             }
         });
         AndroidUtilities.loadingSpinner(loadingProgressBar, true);
+    }
+
+    private void redirectToSessionActivity() {
+        Intent intent = new Intent(this, SessionActivity.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     @Override

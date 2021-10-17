@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_session_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_8sdp"
+    android:layout_marginVertical="@dimen/_4sdp"
+    android:elevation="@dimen/_8sdp"
+    app:cardCornerRadius="@dimen/_12sdp"
+    app:strokeWidth="@dimen/_1sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/item_session_title_text_view"
+            android:layout_width="@dimen/_225sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="@string/dummy"
+            android:textSize="@dimen/_20sdp" />
+
+        <TextView
+            android:id="@+id/item_session_modification_time_text_view"
+            android:layout_width="@dimen/_225sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_session_title_text_view"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="@string/dummy"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/item_session_players_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/item_session_modification_time_text_view"
+            android:gravity="center_horizontal"
+            android:text="@string/players"
+            android:textSize="@dimen/_10sdp" />
+
+        <TextView
+            android:id="@+id/item_session_player_count_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_session_players_text_view"
+            android:layout_toEndOf="@+id/item_session_modification_time_text_view"
+            android:gravity="center_horizontal"
+            android:text="1"
+            android:textSize="@dimen/_24sdp" />
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

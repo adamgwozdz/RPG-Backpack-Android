@@ -5,8 +5,10 @@ import androidx.annotation.Nullable;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public abstract class Utilities {
 
@@ -23,6 +25,17 @@ public abstract class Utilities {
             return new java.sql.Timestamp(parsedDate.getTime());
         } else
             return null;
+    }
+
+    //TODO Get timezone from user's device
+    public static String userFriendlyTimestamp(Timestamp timestamp) {
+        long milliseconds = timestamp.getTime();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(milliseconds));
+        calendar.set(Calendar.MILLISECOND, 0);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        return simpleDateFormat.format(calendar.getTime());
     }
 
 

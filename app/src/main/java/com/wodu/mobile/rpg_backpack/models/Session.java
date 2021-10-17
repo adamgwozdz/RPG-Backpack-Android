@@ -3,10 +3,11 @@ package com.wodu.mobile.rpg_backpack.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Session {
 
-    @SerializedName(value = "sessionId")
+    @SerializedName(value = "sessionID")
     private Integer sessionID;
     @SerializedName(value = "name")
     private String name;
@@ -22,6 +23,8 @@ public class Session {
     private Timestamp dateRemoved;
     @SerializedName(value = "image")
     private String image;
+    @SerializedName(value = "characters")
+    private List<Character> characters;
 
     public Session(Integer sessionID, String name, String password, Integer maxAttributes,
                    Timestamp dateCreated, Timestamp dateModified, Timestamp dateRemoved,
@@ -80,6 +83,10 @@ public class Session {
 
     public String getImage() {
         return image;
+    }
+
+    public List<Character> getCharacters() {
+        return characters;
     }
 
     public enum USER_TIERS {
