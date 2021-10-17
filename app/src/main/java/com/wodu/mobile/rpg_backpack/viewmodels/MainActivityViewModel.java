@@ -183,6 +183,7 @@ public class MainActivityViewModel extends ViewModel {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Join");
                 menuOpen[0] = closeMenu(menuOpen[0], buttonList, translationY);
+                recyclerView.setAlpha(1f);
             }
         });
 
@@ -190,6 +191,7 @@ public class MainActivityViewModel extends ViewModel {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Create");
+                recyclerView.setAlpha(1f);
                 Intent intent = new Intent(view.getContext(), CreateSessionActivity.class);
                 view.getContext().startActivity(intent);
                 ((Activity) view.getContext()).overridePendingTransition(0, 0);
@@ -200,6 +202,7 @@ public class MainActivityViewModel extends ViewModel {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Subscribe");
+                recyclerView.setAlpha(1f);
                 menuOpen[0] = closeMenu(menuOpen[0], buttonList, translationY);
             }
         });
@@ -208,6 +211,7 @@ public class MainActivityViewModel extends ViewModel {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Logout");
+                recyclerView.setAlpha(1f);
                 Application.getInstance().resetToken();
                 Intent intent = new Intent(view.getContext(), LoginActivity.class);
                 view.getContext().startActivity(intent);

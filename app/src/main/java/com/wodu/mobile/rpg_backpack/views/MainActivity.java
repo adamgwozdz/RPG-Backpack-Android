@@ -2,6 +2,7 @@ package com.wodu.mobile.rpg_backpack.views;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.adapters.SessionsListAdapter;
 import com.wodu.mobile.rpg_backpack.models.Session;
+import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
 import com.wodu.mobile.rpg_backpack.viewmodels.MainActivityViewModel;
 
 import java.util.LinkedList;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
 
     private final MainActivityViewModel viewModel = new MainActivityViewModel();
+    private ProgressBar loadingProgressBar;
 
     private List<Session> sessionList;
     private int sessionCount;
@@ -31,19 +34,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        loadingProgressBar = findViewById(R.id.activity_main_loading_spinner);
+
         setupHeader();
         setupButtons();
 
+        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
         viewModel.getSessions(true).observe(this, new androidx.lifecycle.Observer<List<Session>>() {
             @Override
             public void onChanged(List<Session> sessions) {
-                Log.d(TAG, "onChanged: " + sessions.size());
+                AndroidUtilities.loadingSpinner(loadingProgressBar, false);
                 sessionList = sessions;
                 sessionCount = sessions.size();
                 setupHeader();
                 setupSessionsList();
             }
         });
+        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
     }
 
     private void setupHeader() {
