@@ -2,6 +2,10 @@ package com.wodu.mobile.rpg_backpack.views;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -10,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.adapters.SessionsListAdapter;
 import com.wodu.mobile.rpg_backpack.models.Session;

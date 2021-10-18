@@ -4,22 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.CreateSessionActivity">
+    tools:context=".views.JoinSessionActivity">
 
     <TextView
-        android:id="@+id/activity_create_session_image_textview"
+        android:id="@+id/activity_join_session_image_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_132sdp"
         android:drawablePadding="@dimen/_6sdp"
-        android:text="@string/create_session"
+        android:text="@string/join_session"
         android:textSize="@dimen/_30sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
-        android:id="@+id/activity_create_session_loading_spinner"
+        android:id="@+id/activity_join_session_loading_spinner"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,22 +31,22 @@
     </ProgressBar>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_create_session_name_field_text_input_layout"
+        android:id="@+id/activity_join_session_id_field_text_input_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_32sdp"
         android:layout_marginTop="@dimen/_12sdp"
-        android:hint="@string/name"
+        android:hint="@string/session_id"
         app:errorEnabled="true"
-        app:layout_constraintBottom_toTopOf="@+id/activity_create_session_password_field_text_input_layout"
+        app:layout_constraintBottom_toTopOf="@+id/activity_join_session_password_field_text_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_session_image_textview"
+        app:layout_constraintTop_toBottomOf="@+id/activity_join_session_image_textview"
         app:startIconDrawable="@drawable/ic_baseline_person_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/activity_create_session_name_field_edit_text"
+            android:id="@+id/activity_join_session_id_field_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:importantForAutofill="no"
@@ -54,7 +54,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_create_session_password_field_text_input_layout"
+        android:id="@+id/activity_join_session_password_field_text_input_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,11 +64,11 @@
         app:passwordToggleEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_session_name_field_text_input_layout"
+        app:layout_constraintTop_toBottomOf="@+id/activity_join_session_id_field_text_input_layout"
         app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/activity_create_session_password_field_edit_text"
+            android:id="@+id/activity_join_session_password_field_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:importantForAutofill="no"
@@ -76,16 +76,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/activity_create_session_create_button"
+        android:id="@+id/activity_join_session_join_button"
         android:layout_width="@dimen/_250sdp"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/_20sdp"
         android:paddingVertical="@dimen/_6sdp"
-        android:text="@string/create"
+        android:text="@string/join"
         android:textSize="@dimen/_12sdp"
         android:backgroundTint="@color/green_3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_session_password_field_text_input_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_join_session_password_field_text_input_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

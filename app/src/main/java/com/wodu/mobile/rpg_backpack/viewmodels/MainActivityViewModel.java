@@ -1,10 +1,13 @@
 package com.wodu.mobile.rpg_backpack.viewmodels;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.lifecycle.MutableLiveData;
@@ -18,6 +21,7 @@ import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.repositories.SessionRepository;
 import com.wodu.mobile.rpg_backpack.repositories.UserRepository;
 import com.wodu.mobile.rpg_backpack.views.CreateSessionActivity;
+import com.wodu.mobile.rpg_backpack.views.JoinSessionActivity;
 import com.wodu.mobile.rpg_backpack.views.LoginActivity;
 import com.wodu.mobile.rpg_backpack.views.MainActivity;
 
@@ -151,6 +155,7 @@ public class MainActivityViewModel extends ViewModel {
             textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void setupFloatingActionButtons(List<ExtendedFloatingActionButton> buttonList, RecyclerView recyclerView) {
         float translationY = 100f;
         final Boolean[] menuOpen = {false};
@@ -170,8 +175,7 @@ public class MainActivityViewModel extends ViewModel {
                 if (menuOpen[0]) {
                     menuOpen[0] = closeMenu(menuOpen[0], buttonList, translationY);
                     recyclerView.setAlpha(1f);
-                }
-                else {
+                } else {
                     menuOpen[0] = openMenu(menuOpen[0], buttonList);
                     recyclerView.setAlpha(0.15f);
                 }
@@ -184,6 +188,9 @@ public class MainActivityViewModel extends ViewModel {
                 Log.d(TAG, "onClick: Join");
                 menuOpen[0] = closeMenu(menuOpen[0], buttonList, translationY);
                 recyclerView.setAlpha(1f);
+                Intent intent = new Intent(view.getContext(), JoinSessionActivity.class);
+                view.getContext().startActivity(intent);
+                ((Activity) view.getContext()).overridePendingTransition(0, 0);
             }
         });
 

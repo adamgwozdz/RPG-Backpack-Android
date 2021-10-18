@@ -37,4 +37,11 @@ public interface SessionService {
             @Header("Authorization") String token,
             @Body JsonObject jsonBody
     );
+
+    @Headers("Content-Type: application/json")
+    @POST("/api/app/session/sessions/join")
+    Observable<JsonObject> joinSession(
+            @Header("Authorization") String token,
+            @Body JsonObject jsonBody
+    );
 }

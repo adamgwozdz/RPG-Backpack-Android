@@ -1,22 +1,14 @@
 package com.wodu.mobile.rpg_backpack.views;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -25,12 +17,7 @@ import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.models.Character;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
-import com.wodu.mobile.rpg_backpack.utilities.FIELDS;
-import com.wodu.mobile.rpg_backpack.utilities.TextValidator;
 import com.wodu.mobile.rpg_backpack.viewmodels.CreateSessionActivityViewModel;
-import com.wodu.mobile.rpg_backpack.viewmodels.MainActivityViewModel;
-
-import java.util.List;
 
 public class CreateSessionActivity extends AppCompatActivity {
 
@@ -55,7 +42,7 @@ public class CreateSessionActivity extends AppCompatActivity {
         passwordTextInputLayout = findViewById(R.id.activity_create_session_password_field_text_input_layout);
         passwordEditText = findViewById(R.id.activity_create_session_password_field_edit_text);
         createButton = findViewById(R.id.activity_create_session_create_button);
-        loadingProgressBar = findViewById(R.id.activity_create_loading_spinner);
+        loadingProgressBar = findViewById(R.id.activity_create_session_loading_spinner);
 
         setupCreateButton();
         viewModel.validateInput(nameTextInputLayout, passwordTextInputLayout, nameEditText, passwordEditText);
@@ -98,6 +85,8 @@ public class CreateSessionActivity extends AppCompatActivity {
                 "Game master", true, null).observe(this, new Observer<Character>() {
             @Override
             public void onChanged(Character character) {
+                Log.d(TAG, "Create Character: " + character.toString());
+                AndroidUtilities.loadingSpinner(loadingProgressBar, true);
                 redirectToSessionActivity();
             }
         });

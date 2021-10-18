@@ -49,6 +49,32 @@ public class SessionRepository {
         return sessionService.createSession(Application.getInstance().getToken(), createSessionBody(name, password, maxAttributes, image));
     }
 
+    public Observable<JsonObject> joinSession(Integer sessionID, Integer userID, String password, String name, Boolean gameMaster, String image) {
+        sessionService = RestAdapter.getAdapter().create(SessionService.class);
+        return sessionService.joinSession(Application.getInstance().getToken(), joinSessionBody(sessionID, userID, password, name, gameMaster, image));
+    }
+
+    private JsonObject joinSessionBody(Integer sessionID, Integer userID, String password, String name, Boolean gameMaster, String image) {
+        JsonObject gsonObject = new JsonObject();
+        try {
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("sessionID", sessionID);
+            jsonObj.put("userID", userID);
+            jsonObj.put("password", password);
+            jsonObj.put("name", name);
+            jsonObj.put("gameMaster", gameMaster);
+            jsonObj.put("image", image);
+
+            JsonParser jsonParser = new JsonParser();
+            gsonObject = (JsonObject) jsonParser.parse(jsonObj.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return gsonObject;
+    }
+
     private JsonObject createSessionBody(String name, String password, Integer maxAttributes, String image) {
         JsonObject gsonObject = new JsonObject();
         try {

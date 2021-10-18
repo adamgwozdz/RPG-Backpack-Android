@@ -13,6 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RPG_Backpack">
         <activity
+            android:name=".views.JoinSessionActivity"
+            android:exported="true"
+            android:label="@string/title_activity_join_session"
+            android:theme="@style/Theme.RPG_Backpack.NoActionBar" />
+        <activity
             android:name=".views.SessionActivity"
             android:exported="true" />
         <activity
