@@ -35,6 +35,7 @@ public class CreateSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_session);
+        AndroidUtilities.setupUI(this, findViewById(R.id.activity_create_master_view));
 
         nameEditText = findViewById(R.id.activity_create_session_name_field_edit_text);
         passwordEditText = findViewById(R.id.activity_create_session_password_field_edit_text);

@@ -38,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        AndroidUtilities.setupUI(this, findViewById(R.id.activity_register_master_view));
         revokeToken();
 
         nameEditText = findViewById(R.id.activity_register_name_field_edit_text);

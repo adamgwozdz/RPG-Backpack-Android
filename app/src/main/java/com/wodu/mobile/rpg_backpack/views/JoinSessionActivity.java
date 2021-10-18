@@ -33,6 +33,7 @@ public class JoinSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_session);
+        AndroidUtilities.setupUI(this, findViewById(R.id.activity_join_master_view));
 
         sessionIdEditText = findViewById(R.id.activity_join_session_id_field_edit_text);
         passwordEditText = findViewById(R.id.activity_join_session_password_field_edit_text);
