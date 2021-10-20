@@ -15,8 +15,11 @@ import android.widget.ProgressBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.wodu.mobile.rpg_backpack.Application;
+import com.wodu.mobile.rpg_backpack.Event;
 import com.wodu.mobile.rpg_backpack.R;
+import com.wodu.mobile.rpg_backpack.ResponseWrapper;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
+import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.RegisterActivityViewModel;
 
 
@@ -39,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         AndroidUtilities.setupUI(this, findViewById(R.id.activity_register_master_view));
-        revokeToken();
+        viewModel.revokeToken();
 
         nameEditText = findViewById(R.id.activity_register_name_field_edit_text);
         emailEditText = findViewById(R.id.activity_register_email_field_edit_text);
@@ -80,21 +83,23 @@ public class RegisterActivity extends AppCompatActivity {
         String name = nameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
-        viewModel.register(email, name, password, false).observe(this, new Observer<String>() {
+        Loading.showLoading(loadingProgressBar);
+        viewModel.register(email, name, password, false).observe(this, new Observer<Event<ResponseWrapper>>() {
             @Override
-            public void onChanged(String response) {
-                if (response.contains("eyJhbGciOiJIUzI1NiJ9.")) {
-                    redirectToMainActivity();
-                } else if (response.equals("HTTP 401")) {
-                    AndroidUtilities.loadingSpinner(loadingProgressBar, false);
-                    Snackbar.make(view, "Can't create account with provided credentials", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    Log.d(TAG, "UNAUTHORIZED");
+            public void onChanged(Event<ResponseWrapper> responseWrapper) {
+                if (!responseWrapper.hasBeenHandled()) {
+                    String error = responseWrapper.getContentIfNotHandled().getErrorMessage();
+                    if (error == null) {
+                        redirectToMainActivity();
+                    } else {
+                        Loading.hideLoading(loadingProgressBar);
+                        Snackbar.make(view, error, Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
                 }
             }
         });
-        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
+        Loading.showLoading(loadingProgressBar);
     }
 
     private void redirectToMainActivity() {
@@ -107,9 +112,5 @@ public class RegisterActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.overridePendingTransition(0, 0);
-    }
-
-    private void revokeToken() {
-        Application.getInstance().setToken("");
     }
 }

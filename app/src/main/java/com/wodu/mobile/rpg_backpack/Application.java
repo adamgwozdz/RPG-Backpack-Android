@@ -29,18 +29,20 @@ public class Application extends android.app.Application {
     }
 
     private void setUserData(String token) {
-        try {
-            String body = JWTUtils.decoded(token);
-            userID = getBodyIntegerElement(body, 2);
-            statusID = getBodyIntegerElement(body, 3);
-            email = getBodyStringElement(body, 4);
-            name = getBodyStringElement(body, 5);
-            emailVerified = getBodyStringElement(body, 6).equals("true");
-            subscription = getBodyStringElement(body, 7).equals("true");
-            admin = getBodyStringElement(body, 8).equals("true");
-            dateCreated = Long.parseLong(getBodyStringElement(body, 9));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (token != null) {
+            try {
+                String body = JWTUtils.decoded(token);
+                userID = getBodyIntegerElement(body, 2);
+                statusID = getBodyIntegerElement(body, 3);
+                email = getBodyStringElement(body, 4);
+                name = getBodyStringElement(body, 5);
+                emailVerified = getBodyStringElement(body, 6).equals("true");
+                subscription = getBodyStringElement(body, 7).equals("true");
+                admin = getBodyStringElement(body, 8).equals("true");
+                dateCreated = Long.parseLong(getBodyStringElement(body, 9));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -99,6 +101,6 @@ public class Application extends android.app.Application {
     }
 
     public void resetToken() {
-        this.token = "";
+        this.token = null;
     }
 }

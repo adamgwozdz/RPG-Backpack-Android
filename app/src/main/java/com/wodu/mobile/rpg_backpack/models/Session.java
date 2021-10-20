@@ -26,6 +26,10 @@ public class Session {
     @SerializedName(value = "characters")
     private List<Character> characters;
 
+
+    @SerializedName(value = "status")
+    private Integer status;
+
     public Session(Integer sessionID, String name, String password, Integer maxAttributes,
                    Timestamp dateCreated, Timestamp dateModified, Timestamp dateRemoved,
                    String image) {
@@ -87,6 +91,10 @@ public class Session {
 
     public List<Character> getCharacters() {
         return characters;
+    }
+
+    public Integer getStatus() {
+        return status;
     }
 
     public enum USER_TIERS {

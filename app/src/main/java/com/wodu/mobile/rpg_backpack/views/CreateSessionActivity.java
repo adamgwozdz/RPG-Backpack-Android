@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -54,18 +55,18 @@ public class CreateSessionActivity extends AppCompatActivity {
             int nameFieldLength = nameEditText.getText().toString().trim().length();
             int passwordFieldLength = passwordEditText.getText().toString().trim().length();
 
-            if (nameFieldLength == 0)
+            if (nameFieldLength == 111)
                 Snackbar.make(view, "Session name cannot be empty", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             else if (passwordFieldLength == 0)
                 Snackbar.make(view, "Password cannot be empty", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             else
-                sendRequest();
+                sendRequest(view);
         });
     }
 
-    private void sendRequest() {
+    private void sendRequest(View view) {
         int maxAttributes = viewModel.getMaxAttributesNumber(Application.getInstance().getEmailVerified());
         AndroidUtilities.loadingSpinner(loadingProgressBar, true);
         viewModel.createSession(nameEditText.getText().toString().trim(),
@@ -73,8 +74,15 @@ public class CreateSessionActivity extends AppCompatActivity {
                 maxAttributes, null).observe(this, new androidx.lifecycle.Observer<Session>() {
             @Override
             public void onChanged(Session session) {
-                Log.d(TAG, "Session: " + session.toString());
-                createCharacter(session);
+                if (session.getStatus() == 401) {
+                    AndroidUtilities.loadingSpinner(loadingProgressBar, false);
+                    Snackbar.make(view, "Can't create session with provided credentials", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    Log.d(TAG, "UNAUTHORIZED");
+                } else {
+                    Log.d(TAG, "Session: " + session.toString());
+                    createCharacter(session);
+                }
             }
         });
         AndroidUtilities.loadingSpinner(loadingProgressBar, true);

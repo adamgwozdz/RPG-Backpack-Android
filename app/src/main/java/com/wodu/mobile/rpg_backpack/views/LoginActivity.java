@@ -3,27 +3,20 @@ package com.wodu.mobile.rpg_backpack.views;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.wodu.mobile.rpg_backpack.Application;
+import com.wodu.mobile.rpg_backpack.Event;
 import com.wodu.mobile.rpg_backpack.R;
-import com.wodu.mobile.rpg_backpack.models.Session;
+import com.wodu.mobile.rpg_backpack.ResponseWrapper;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
-import com.wodu.mobile.rpg_backpack.utilities.FIELDS;
-import com.wodu.mobile.rpg_backpack.utilities.TextValidator;
+import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.LoginActivityViewModel;
 
 public class LoginActivity extends AppCompatActivity {
@@ -44,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         AndroidUtilities.setupUI(this, findViewById(R.id.activity_login_master_view));
-        revokeToken();
+        viewModel.revokeToken();
 
         emailEditText = findViewById(R.id.activity_login_email_field_edit_text);
         passwordEditText = findViewById(R.id.activity_login_password_field_edit_text);
@@ -84,36 +77,28 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
-        viewModel.login(email, password).observe(this, new Observer<String>() {
+        Loading.showLoading(loadingProgressBar);
+        viewModel.login(email, password).observe(this, new Observer<Event<ResponseWrapper>>() {
             @Override
-            public void onChanged(String response) {
-                if (response.contains("eyJhbGciOiJIUzI1NiJ9.")) {
-                    RedirectToMainActivity();
-                } else if (response.equals("HTTP 401")) {
-                    AndroidUtilities.loadingSpinner(loadingProgressBar, false);
-                    Snackbar.make(view, "Provided credentials are incorrect", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    Log.d(TAG, "UNAUTHORIZED");
+            public void onChanged(Event<ResponseWrapper> responseWrapper) {
+                if (!responseWrapper.hasBeenHandled()) {
+                    String error = responseWrapper.getContentIfNotHandled().getErrorMessage();
+                    if (error == null) {
+                        redirectToMainActivity();
+                    } else {
+                        Loading.hideLoading(loadingProgressBar);
+                        Snackbar.make(view, error, Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
                 }
             }
         });
-        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
+        Loading.showLoading(loadingProgressBar);
     }
 
-    private void RedirectToMainActivity() {
+    private void redirectToMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         overridePendingTransition(0, 0);
-    }
-
-    private void reloadActivity() {
-        finish();
-        startActivity(getIntent());
-        overridePendingTransition(0, 0);
-    }
-
-    private void revokeToken() {
-        Application.getInstance().setToken("");
     }
 }

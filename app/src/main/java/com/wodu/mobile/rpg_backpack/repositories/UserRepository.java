@@ -10,6 +10,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.reactivex.rxjava3.core.Observable;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserRepository {
 
@@ -25,6 +28,7 @@ public class UserRepository {
         }
         return instance;
     }
+
 
     private JsonObject createRegisterJsonBody(String email, String name, String password, Boolean subscription) {
         JsonObject gsonObject = new JsonObject();
@@ -62,12 +66,12 @@ public class UserRepository {
         return gsonObject;
     }
 
-    public Observable<JsonObject> register(String email, String name, String password, Boolean subscription) {
+    public Observable<Response<JsonObject>> register(String email, String name, String password, Boolean subscription) {
         userService = RestAdapter.getAdapter().create(UserService.class);
         return userService.register(createRegisterJsonBody(email, name, password, subscription));
     }
 
-    public Observable<JsonObject> login(String email, String password) {
+    public Observable<Response<JsonObject>> login(String email, String password) {
         userService = RestAdapter.getAdapter().create(UserService.class);
         return userService.login(createLoginJsonBody(email, password));
     }

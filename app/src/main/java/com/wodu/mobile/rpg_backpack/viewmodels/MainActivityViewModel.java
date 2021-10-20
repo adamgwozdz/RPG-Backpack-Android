@@ -217,7 +217,7 @@ public class MainActivityViewModel extends ViewModel {
         buttonList.get(4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: Logout");
+                Log.d(TAG, "-----------------------------------------------LOGOUT-----------------------------------------------");
                 recyclerView.setAlpha(1f);
                 Application.getInstance().resetToken();
                 Intent intent = new Intent(view.getContext(), LoginActivity.class);

@@ -12,6 +12,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonObject;
 
 import com.wodu.mobile.rpg_backpack.Application;
+import com.wodu.mobile.rpg_backpack.Event;
+import com.wodu.mobile.rpg_backpack.ResponseWrapper;
 import com.wodu.mobile.rpg_backpack.repositories.UserRepository;
 import com.wodu.mobile.rpg_backpack.utilities.FIELDS;
 import com.wodu.mobile.rpg_backpack.utilities.TextValidator;
@@ -21,6 +23,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import retrofit2.Response;
 
 public class RegisterActivityViewModel extends ViewModel {
 
@@ -28,35 +31,50 @@ public class RegisterActivityViewModel extends ViewModel {
 
     private final UserRepository userRepository = UserRepository.getInstance();
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private final MutableLiveData<String> registrationMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Event<ResponseWrapper>> registerMutableLiveData = new MutableLiveData<>();
 
     public RegisterActivityViewModel() {}
 
-    public MutableLiveData<String> register(String email, String name, String password, boolean subscription) {
+    public MutableLiveData<Event<ResponseWrapper>> register(String email, String name, String password, boolean subscription) {
         loadRegisterData(email, name, password, subscription);
-        return registrationMutableLiveData;
+        return registerMutableLiveData;
     }
 
     private void loadRegisterData(String email, String name, String password, boolean subscription) {
-        userRepository.register(email, name, password, subscription).subscribe(new Observer<JsonObject>() {
+        userRepository.register(email, name, password, subscription).subscribe(new Observer<Response<JsonObject>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposables.add(d);
             }
 
             @Override
-            public void onNext(@NonNull JsonObject jsonResponse) {
-                String token = Utilities.jsonResponseStringToString(jsonResponse.get("token").toString());
-                Log.d(TAG, "Token: " + token);
-                Application.getInstance().setToken(token);
-                registrationMutableLiveData.postValue(token);
+            public void onNext(@NonNull Response<JsonObject> jsonObjectResponse) {
+                if (jsonObjectResponse.isSuccessful()) {
+                    Application.getInstance().setToken(Utilities.jsonResponseStringToString(jsonObjectResponse.body().get("token").toString().trim()));
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), null)));
+                } else if (jsonObjectResponse.code() == 400) {
+                    Log.d(TAG, "HTTP Error: 400 Bad Request");
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "400 Bad request")));
+                } else if (jsonObjectResponse.code() == 401) {
+                    Log.d(TAG, "HTTP Error: 401 Unauthorized");
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "Can't create account with provided credentials")));
+                } else if (jsonObjectResponse.code() == 403) {
+                    Log.d(TAG, "HTTP Error: 403 Forbidden");
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "Session expired")));
+                } else if (jsonObjectResponse.code() == 404) {
+                    Log.d(TAG, "HTTP Error: 404 Not Found");
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "404 Not found")));
+                } else if (jsonObjectResponse.code() == 500) {
+                    Log.d(TAG, "HTTP Error: 500 Internal Server Error");
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "500 Server error")));
+                } else {
+                    Log.d(TAG, "Unknown Error");
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "Unknown Error")));
+                }
             }
 
             @Override
             public void onError(@NonNull Throwable e) {
-                String error = e.getMessage();
-                registrationMutableLiveData.postValue(error.trim());
-                Log.d(TAG, "onError: " + error);
             }
 
             @Override
@@ -113,5 +131,9 @@ public class RegisterActivityViewModel extends ViewModel {
     protected void onCleared() {
         super.onCleared();
         disposables.clear();
+    }
+
+    public void revokeToken() {
+        Application.getInstance().setToken("");
     }
 }

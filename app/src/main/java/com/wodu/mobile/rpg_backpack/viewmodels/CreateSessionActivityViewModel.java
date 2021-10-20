@@ -134,4 +134,10 @@ public class CreateSessionActivityViewModel extends ViewModel {
             }
         });
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        disposables.clear();
+    }
 }
