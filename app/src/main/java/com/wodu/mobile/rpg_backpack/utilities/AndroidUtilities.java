@@ -14,13 +14,6 @@ import com.wodu.mobile.rpg_backpack.views.LoginActivity;
 
 public abstract class AndroidUtilities extends AppCompatActivity {
 
-    public static void loadingSpinner(ProgressBar progressBar, boolean show) {
-        if (show)
-            progressBar.setVisibility(View.VISIBLE);
-        else
-            progressBar.setVisibility(View.GONE);
-    }
-
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(

@@ -12,9 +12,9 @@ import android.widget.ProgressBar;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.wodu.mobile.rpg_backpack.Event;
+import com.wodu.mobile.rpg_backpack.response_wrappers.Event;
 import com.wodu.mobile.rpg_backpack.R;
-import com.wodu.mobile.rpg_backpack.ResponseWrapper;
+import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.LoginActivityViewModel;
@@ -78,16 +78,16 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString().trim();
 
         Loading.showLoading(loadingProgressBar);
-        viewModel.login(email, password).observe(this, new Observer<Event<ResponseWrapper>>() {
+        viewModel.login(email, password).observe(this, new Observer<Event<ResponseWrapperJsonObject>>() {
             @Override
-            public void onChanged(Event<ResponseWrapper> responseWrapper) {
+            public void onChanged(Event<ResponseWrapperJsonObject> responseWrapper) {
                 if (!responseWrapper.hasBeenHandled()) {
-                    String error = responseWrapper.getContentIfNotHandled().getErrorMessage();
-                    if (error == null) {
+                    ResponseWrapperJsonObject response = responseWrapper.getContentIfNotHandled();
+                    if (response.getErrorMessage() == null) {
                         redirectToMainActivity();
                     } else {
                         Loading.hideLoading(loadingProgressBar);
-                        Snackbar.make(view, error, Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, response.getErrorMessage(), Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }
                 }

@@ -12,8 +12,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonObject;
 
 import com.wodu.mobile.rpg_backpack.Application;
-import com.wodu.mobile.rpg_backpack.Event;
-import com.wodu.mobile.rpg_backpack.ResponseWrapper;
+import com.wodu.mobile.rpg_backpack.response_wrappers.Event;
+import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.repositories.UserRepository;
 import com.wodu.mobile.rpg_backpack.utilities.FIELDS;
 import com.wodu.mobile.rpg_backpack.utilities.TextValidator;
@@ -31,11 +31,11 @@ public class RegisterActivityViewModel extends ViewModel {
 
     private final UserRepository userRepository = UserRepository.getInstance();
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private final MutableLiveData<Event<ResponseWrapper>> registerMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Event<ResponseWrapperJsonObject>> registerMutableLiveData = new MutableLiveData<>();
 
     public RegisterActivityViewModel() {}
 
-    public MutableLiveData<Event<ResponseWrapper>> register(String email, String name, String password, boolean subscription) {
+    public MutableLiveData<Event<ResponseWrapperJsonObject>> register(String email, String name, String password, boolean subscription) {
         loadRegisterData(email, name, password, subscription);
         return registerMutableLiveData;
     }
@@ -49,27 +49,28 @@ public class RegisterActivityViewModel extends ViewModel {
 
             @Override
             public void onNext(@NonNull Response<JsonObject> jsonObjectResponse) {
+                JsonObject jsonObject = jsonObjectResponse.body();
                 if (jsonObjectResponse.isSuccessful()) {
                     Application.getInstance().setToken(Utilities.jsonResponseStringToString(jsonObjectResponse.body().get("token").toString().trim()));
-                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), null)));
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, null)));
                 } else if (jsonObjectResponse.code() == 400) {
                     Log.d(TAG, "HTTP Error: 400 Bad Request");
-                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "400 Bad request")));
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "400 Bad request")));
                 } else if (jsonObjectResponse.code() == 401) {
                     Log.d(TAG, "HTTP Error: 401 Unauthorized");
-                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "Can't create account with provided credentials")));
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "Can't create account with provided credentials")));
                 } else if (jsonObjectResponse.code() == 403) {
                     Log.d(TAG, "HTTP Error: 403 Forbidden");
-                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "Session expired")));
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "Session expired")));
                 } else if (jsonObjectResponse.code() == 404) {
                     Log.d(TAG, "HTTP Error: 404 Not Found");
-                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "404 Not found")));
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "404 Not found")));
                 } else if (jsonObjectResponse.code() == 500) {
                     Log.d(TAG, "HTTP Error: 500 Internal Server Error");
-                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "500 Server error")));
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "500 Server error")));
                 } else {
                     Log.d(TAG, "Unknown Error");
-                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapper(jsonObjectResponse.body(), "Unknown Error")));
+                    registerMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "Unknown Error")));
                 }
             }
 

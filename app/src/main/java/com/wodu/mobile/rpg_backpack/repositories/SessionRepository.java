@@ -13,6 +13,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Call;
+import retrofit2.Response;
 
 public class SessionRepository {
 
@@ -45,12 +46,12 @@ public class SessionRepository {
         return sessionService.getSession(Application.getInstance().getToken(), userId);
     }
 
-    public Observable<JsonObject> createSession(String name, String password, Integer maxAttributes, String image) {
+    public Observable<Response<JsonObject>> createSession(String name, String password, Integer maxAttributes, String image) {
         sessionService = RestAdapter.getAdapter().create(SessionService.class);
         return sessionService.createSession(Application.getInstance().getToken(), createSessionBody(name, password, maxAttributes, image));
     }
 
-    public Observable<JsonObject> joinSession(Integer sessionID, Integer userID, String password, String name, Boolean gameMaster, String image) {
+    public Observable<Response<JsonObject>> joinSession(Integer sessionID, Integer userID, String password, String name, Boolean gameMaster, String image) {
         sessionService = RestAdapter.getAdapter().create(SessionService.class);
         return sessionService.joinSession(Application.getInstance().getToken(), joinSessionBody(sessionID, userID, password, name, gameMaster, image));
     }

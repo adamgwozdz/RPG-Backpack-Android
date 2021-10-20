@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.reactivex.rxjava3.core.Observable;
+import retrofit2.Response;
 
 public class CharacterRepository {
 
@@ -26,7 +27,7 @@ public class CharacterRepository {
         return new CharacterRepository();
     }
 
-    public Observable<JsonObject> createCharacter(Integer userID, Integer sessionID, String name, Boolean isGameMaster, String image) {
+    public Observable<Response<JsonObject>> createCharacter(Integer userID, Integer sessionID, String name, Boolean isGameMaster, String image) {
         characterService = RestAdapter.getAdapter().create(CharacterService.class);
         return characterService.createCharacter(Application.getInstance().getToken(), sessionID.toString(), createCharacterBody(userID, name, isGameMaster, image));
     }

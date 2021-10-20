@@ -20,6 +20,7 @@ import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.adapters.SessionsListAdapter;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
+import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.MainActivityViewModel;
 
 import java.util.LinkedList;
@@ -45,18 +46,18 @@ public class MainActivity extends AppCompatActivity {
         setupHeader();
         setupButtons();
 
-        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
+        Loading.showLoading(loadingProgressBar);
         viewModel.getSessions(true).observe(this, new androidx.lifecycle.Observer<List<Session>>() {
             @Override
             public void onChanged(List<Session> sessions) {
-                AndroidUtilities.loadingSpinner(loadingProgressBar, false);
+                Loading.hideLoading(loadingProgressBar);
                 sessionList = sessions;
                 sessionCount = sessions.size();
                 setupHeader();
                 setupSessionsList();
             }
         });
-        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
+        Loading.showLoading(loadingProgressBar);
     }
 
     private void setupHeader() {

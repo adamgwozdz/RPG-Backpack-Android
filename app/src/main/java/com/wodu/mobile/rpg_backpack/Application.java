@@ -1,5 +1,7 @@
 package com.wodu.mobile.rpg_backpack;
 
+import com.wodu.mobile.rpg_backpack.utilities.JWTUtils;
+
 public class Application extends android.app.Application {
 
     private final String TAG = "ApplicationTag";

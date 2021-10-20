@@ -1,23 +1,13 @@
-package com.wodu.mobile.rpg_backpack;
+package com.wodu.mobile.rpg_backpack.response_wrappers;
 
 import com.google.gson.JsonObject;
 
 public class ResponseWrapper {
 
-    private JsonObject body;
     private String errorMessage;
 
-    public ResponseWrapper(JsonObject body, String errorMessage) {
-        this.body = body;
+    public ResponseWrapper(String errorMessage) {
         this.errorMessage = errorMessage;
-    }
-
-    public JsonObject getBody() {
-        return body;
-    }
-
-    public void setBody(JsonObject body) {
-        this.body = body;
     }
 
     public String getErrorMessage() {

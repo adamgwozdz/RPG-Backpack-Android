@@ -1,4 +1,4 @@
-package com.wodu.mobile.rpg_backpack;
+package com.wodu.mobile.rpg_backpack.utilities;
 
 import android.util.Base64;
 import android.util.Log;

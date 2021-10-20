@@ -10,12 +10,16 @@ import androidx.lifecycle.ViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.models.Character;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.repositories.CharacterRepository;
 import com.wodu.mobile.rpg_backpack.repositories.SessionRepository;
+import com.wodu.mobile.rpg_backpack.response_wrappers.Event;
+import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.utilities.FIELDS;
 import com.wodu.mobile.rpg_backpack.utilities.TextValidator;
+import com.wodu.mobile.rpg_backpack.utilities.Utilities;
 
 import java.util.List;
 
@@ -23,6 +27,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import retrofit2.Response;
 
 public class CreateSessionActivityViewModel extends ViewModel {
 
@@ -32,18 +37,18 @@ public class CreateSessionActivityViewModel extends ViewModel {
     private final CharacterRepository characterRepository = CharacterRepository.getInstance();
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    private final MutableLiveData<Session> sessionMutableLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Character> characterMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Event<ResponseWrapperJsonObject>> sessionMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Event<ResponseWrapperJsonObject>> characterMutableLiveData = new MutableLiveData<>();
 
     public CreateSessionActivityViewModel() {
     }
 
-    public MutableLiveData<Session> createSession(String name, String password, Integer maxAttributes, String image) {
+    public MutableLiveData<Event<ResponseWrapperJsonObject>> createSession(String name, String password, Integer maxAttributes, String image) {
         createSessionSubscription(name, password, maxAttributes, image);
         return sessionMutableLiveData;
     }
 
-    public MutableLiveData<Character> createCharacter(Integer userID, Integer sessionID, String name, Boolean isGameMaster, String image) {
+    public MutableLiveData<Event<ResponseWrapperJsonObject>> createCharacter(Integer userID, Integer sessionID, String name, Boolean isGameMaster, String image) {
         createCharacterSubscription(userID, sessionID, name, isGameMaster, image);
         return characterMutableLiveData;
     }
@@ -56,23 +61,40 @@ public class CreateSessionActivityViewModel extends ViewModel {
     }
 
     private void createSessionSubscription(String name, String password, Integer maxAttributes, String image) {
-        sessionRepository.createSession(name, password, maxAttributes, image).subscribe(new Observer<JsonObject>() {
+        sessionRepository.createSession(name, password, maxAttributes, image).subscribe(new Observer<Response<JsonObject>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 disposables.add(d);
             }
 
             @Override
-            public void onNext(@NonNull JsonObject sessionResponse) {
-                Gson gson = new Gson();
-                Session session = gson.fromJson(sessionResponse, Session.class);
-                sessionMutableLiveData.postValue(session);
+            public void onNext(@NonNull Response<JsonObject> jsonObjectResponse) {
+                JsonObject jsonObject = jsonObjectResponse.body();
+                if (jsonObjectResponse.isSuccessful()) {
+                    sessionMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, null)));
+                } else if (jsonObjectResponse.code() == 400) {
+                    Log.d(TAG, "HTTP Error: 400 Bad Request");
+                    sessionMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "400 Bad request")));
+                } else if (jsonObjectResponse.code() == 401) {
+                    Log.d(TAG, "HTTP Error: 401 Unauthorized");
+                    sessionMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "Can't create session with provided credentials")));
+                } else if (jsonObjectResponse.code() == 403) {
+                    Log.d(TAG, "HTTP Error: 403 Forbidden");
+                    sessionMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "Session expired")));
+                } else if (jsonObjectResponse.code() == 404) {
+                    Log.d(TAG, "HTTP Error: 404 Not Found");
+                    sessionMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "404 Not found")));
+                } else if (jsonObjectResponse.code() == 500) {
+                    Log.d(TAG, "HTTP Error: 500 Internal Server Error");
+                    sessionMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "500 Server error")));
+                } else {
+                    Log.d(TAG, "Unknown Error");
+                    sessionMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "Unknown Error")));
+                }
             }
 
             @Override
-            public void onError(@NonNull Throwable e) {
-                Log.d(TAG, "onError: " + e);
-            }
+            public void onError(@NonNull Throwable e) {}
 
             @Override
             public void onComplete() {
@@ -81,17 +103,36 @@ public class CreateSessionActivityViewModel extends ViewModel {
     }
 
     private void createCharacterSubscription(Integer userID, Integer sessionID, String name, Boolean isGameMaster, String image) {
-        characterRepository.createCharacter(userID, sessionID, name, isGameMaster, image).subscribe(new Observer<JsonObject>() {
+        characterRepository.createCharacter(userID, sessionID, name, isGameMaster, image).subscribe(new Observer<Response<JsonObject>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 
             }
 
             @Override
-            public void onNext(@NonNull JsonObject characterResponse) {
-                Gson gson = new Gson();
-                Character character = gson.fromJson(characterResponse, Character.class);
-                characterMutableLiveData.postValue(character);
+            public void onNext(@NonNull Response<JsonObject> jsonObjectResponse) {
+                JsonObject jsonObject = jsonObjectResponse.body();
+                if (jsonObjectResponse.isSuccessful()) {
+                    characterMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, null)));
+                } else if (jsonObjectResponse.code() == 400) {
+                    Log.d(TAG, "HTTP Error: 400 Bad Request");
+                    characterMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "400 Bad request")));
+                } else if (jsonObjectResponse.code() == 401) {
+                    Log.d(TAG, "HTTP Error: 401 Unauthorized");
+                    characterMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "Can't create character with provided credentials")));
+                } else if (jsonObjectResponse.code() == 403) {
+                    Log.d(TAG, "HTTP Error: 403 Forbidden");
+                    characterMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "Session expired")));
+                } else if (jsonObjectResponse.code() == 404) {
+                    Log.d(TAG, "HTTP Error: 404 Not Found");
+                    characterMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "404 Not found")));
+                } else if (jsonObjectResponse.code() == 500) {
+                    Log.d(TAG, "HTTP Error: 500 Internal Server Error");
+                    characterMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "500 Server error")));
+                } else {
+                    Log.d(TAG, "Unknown Error");
+                    characterMutableLiveData.postValue(new Event<>(new ResponseWrapperJsonObject(jsonObject, "Unknown Error")));
+                }
             }
 
             @Override
@@ -133,6 +174,11 @@ public class CreateSessionActivityViewModel extends ViewModel {
                 }
             }
         });
+    }
+
+    public Session convertToSession(JsonObject jsonObject) {
+                Gson gson = new Gson();
+                return gson.fromJson(jsonObject, Session.class);
     }
 
     @Override

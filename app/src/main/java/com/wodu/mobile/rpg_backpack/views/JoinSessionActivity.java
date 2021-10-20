@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -14,7 +15,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.models.Session;
+import com.wodu.mobile.rpg_backpack.response_wrappers.Event;
+import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
+import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.JoinSessionViewModel;
 
 public class JoinSessionActivity extends AppCompatActivity {
@@ -59,24 +63,31 @@ public class JoinSessionActivity extends AppCompatActivity {
                 Snackbar.make(view, "Password cannot be empty", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             else
-                sendRequest();
+                sendRequest(view);
         });
     }
 
-    private void sendRequest() {
+    private void sendRequest(View view) {
         Application userData = Application.getInstance();
-        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
+        Loading.showLoading(loadingProgressBar);
         viewModel.joinSession(Integer.valueOf(sessionIdEditText.getText().toString().trim()),
                 userData.getUserID(), passwordEditText.getText().toString().trim(), userData.getName(),
-                false, null).observe(this, new androidx.lifecycle.Observer<Session>() {
+                false, null).observe(this, new androidx.lifecycle.Observer<Event<ResponseWrapperJsonObject>>() {
             @Override
-            public void onChanged(Session session) {
-                Log.d(TAG, "Joined Session: " + session.toString());
-                AndroidUtilities.loadingSpinner(loadingProgressBar, false);
-                redirectToSessionActivity();
+            public void onChanged(Event<ResponseWrapperJsonObject> responseWrapper) {
+                if (!responseWrapper.hasBeenHandled()) {
+                    ResponseWrapperJsonObject response = responseWrapper.getContentIfNotHandled();
+                    if (response.getErrorMessage() == null) {
+                        redirectToSessionActivity();
+                    } else {
+                        Loading.hideLoading(loadingProgressBar);
+                        Snackbar.make(view, response.getErrorMessage(), Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+                }
             }
         });
-        AndroidUtilities.loadingSpinner(loadingProgressBar, true);
+        Loading.showLoading(loadingProgressBar);
     }
 
     private void redirectToSessionActivity() {

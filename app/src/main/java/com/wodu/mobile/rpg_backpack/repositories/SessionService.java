@@ -6,6 +6,7 @@ import com.wodu.mobile.rpg_backpack.models.Session;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -33,14 +34,14 @@ public interface SessionService {
 
     @Headers("Content-Type: application/json")
     @POST("/api/app/session/sessions")
-    Observable<JsonObject> createSession(
+    Observable<Response<JsonObject>> createSession(
             @Header("Authorization") String token,
             @Body JsonObject jsonBody
     );
 
     @Headers("Content-Type: application/json")
     @POST("/api/app/session/sessions/join")
-    Observable<JsonObject> joinSession(
+    Observable<Response<JsonObject>> joinSession(
             @Header("Authorization") String token,
             @Body JsonObject jsonBody
     );
