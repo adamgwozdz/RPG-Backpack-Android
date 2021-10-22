@@ -6,6 +6,7 @@ public enum FIELDS {
     USERNAME(4, 14),
     SESSION_NAME(1, 30),
     SESSION_PASSWORD(6, 30),
+    SESSION_ID(1, 7),
     CHARACTER_NAME(1, 30);
 
     public int minLength;

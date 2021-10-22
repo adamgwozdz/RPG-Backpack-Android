@@ -89,10 +89,9 @@ public class JoinSessionViewModel extends ViewModel {
         sessionIdEditText.addTextChangedListener(new TextValidator(sessionIdEditText) {
             @Override
             public void validate(TextView textView, String text) {
-                //TODO sessionID not name!!!
-                if (text.length() < FIELDS.SESSION_NAME.minLength) {
+                if (text.length() < FIELDS.SESSION_ID.minLength) {
                     sessionIdTextInputLayout.setError("Session ID is too short");
-                } else if (text.length() > FIELDS.SESSION_NAME.maxLength) {
+                } else if (text.length() > FIELDS.SESSION_ID.maxLength) {
                     sessionIdTextInputLayout.setError("Session ID is too long");
                 } else {
                     sessionIdTextInputLayout.setError(null);
