@@ -176,11 +176,6 @@ public class CreateSessionActivityViewModel extends ViewModel {
         });
     }
 
-    public Session convertToSession(JsonObject jsonObject) {
-                Gson gson = new Gson();
-                return gson.fromJson(jsonObject, Session.class);
-    }
-
     @Override
     protected void onCleared() {
         super.onCleared();

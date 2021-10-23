@@ -1,5 +1,8 @@
 package com.wodu.mobile.rpg_backpack.adapters;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,14 +10,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
+import com.wodu.mobile.rpg_backpack.models.Character;
 import com.wodu.mobile.rpg_backpack.models.Session;
-import com.wodu.mobile.rpg_backpack.utilities.Utilities;
+import com.wodu.mobile.rpg_backpack.views.SessionActivity;
 
 import java.util.List;
 
@@ -22,10 +25,12 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
     private final String TAG = "SessionsListAdapter";
 
+    private Context context;
     private List<Session> sessionList;
     private View view;
 
-    public SessionsListAdapter(List<Session> sessionList) {
+    public SessionsListAdapter(Context context, List<Session> sessionList) {
+        this.context = context;
         this.sessionList = sessionList;
     }
 
@@ -40,14 +45,21 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TextView sessionNameTextView = holder.getSessionName();
-        TextView sessionModificationTime = holder.getModificationTime();
+        TextView sessionIdTextView = holder.getModificationTime();
         TextView sessionPlayersCountTextView = holder.getPlayerCount();
         MaterialCardView sessionCardView = holder.getSessionCardView();
 
+        Session session = sessionList.get(position);
+        Character character = getCurrentUsersCharacter(session);
+
+        int sessionID = session.getSessionID();
+        boolean isGameMaster = character.getGameMaster();
+
         setupSessionName(sessionNameTextView, position);
         setupPlayerCounter(sessionPlayersCountTextView, position);
-        setupModificationTime(sessionModificationTime, position);
+        setupSessionID(sessionIdTextView, sessionID);
         setupSessionOwnerIndicator(sessionCardView, position);
+        setupSessionButtons(sessionCardView, sessionID, isGameMaster);
     }
 
     private void setupSessionName(TextView sessionNameTextView, int position) {
@@ -60,13 +72,9 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         sessionPlayersCountTextView.setText(playerCount);
     }
 
-    private void setupModificationTime(TextView sessionModificationTime, int position) {
-        String lastModified;
-        if (sessionList.get(position).getDateModified() == null)
-            lastModified = "Last modified on " + Utilities.userFriendlyTimestamp(sessionList.get(position).getDateCreated());
-        else
-            lastModified = "Last modified on " + Utilities.userFriendlyTimestamp(sessionList.get(position).getDateModified());
-        sessionModificationTime.setText(lastModified);
+    private void setupSessionID(TextView sessionIdTextView, int sessionID) {
+        String sessionIdString = "Session ID: " + sessionID;
+        sessionIdTextView.setText(sessionIdString);
     }
 
     // Creates green border around sessions owned by currently logged in user
@@ -74,8 +82,42 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         int userID = Application.getInstance().getUserID();
         int characterUserId = sessionList.get(position).getCharacters().get(0).getUserID();
         boolean isGameMaster = sessionList.get(position).getCharacters().get(0).getGameMaster();
+        //TODO For some reason sometimes even without meeting if statement requirements and executing code, color is changed
         if (userID == characterUserId && isGameMaster)
             sessionCardView.setStrokeColor(view.getResources().getColor(R.color.color_image_border));
+        else {
+            Log.d(TAG, "setupSessionOwnerIndicator: " + position);
+        }
+    }
+
+    private void setupSessionButtons(MaterialCardView sessionCardView, int sessionID, boolean isGameMaster) {
+        sessionCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                redirectToSessionActivity(sessionID, isGameMaster);
+            }
+        });
+    }
+
+    private void redirectToSessionActivity(int sessionID, boolean isGameMaster) {
+        Activity activity = (Activity) context;
+        Intent intent = new Intent(context, SessionActivity.class);
+        intent.putExtra("sessionID", sessionID);
+        intent.putExtra("isGameMaster", isGameMaster);
+        context.startActivity(intent);
+        activity.overridePendingTransition(0, 0);
+    }
+
+    private Character getCurrentUsersCharacter(Session session) {
+        Integer userID = Application.getInstance().getUserID();
+        Character character = new Character();
+        for (int i = 0; i < session.getCharacters().size(); i++) {
+            if (session.getCharacters().get(i).getUserID().equals(userID)) {
+                character = session.getCharacters().get(i);
+                break;
+            }
+        }
+        return character;
     }
 
     @Override
@@ -93,7 +135,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         public ViewHolder(View view) {
             super(view);
             sessionName = view.findViewById(R.id.item_session_title_text_view);
-            modificationTime = view.findViewById(R.id.item_session_modification_time_text_view);
+            modificationTime = view.findViewById(R.id.item_session_session_id);
             playerCount = view.findViewById(R.id.item_session_player_count_text_view);
             sessionCardView = view.findViewById(R.id.item_session_card_view);
         }

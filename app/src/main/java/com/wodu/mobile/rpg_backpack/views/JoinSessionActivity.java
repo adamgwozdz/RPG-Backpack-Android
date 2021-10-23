@@ -14,10 +14,12 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
+import com.wodu.mobile.rpg_backpack.models.Character;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.response_wrappers.Event;
 import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
+import com.wodu.mobile.rpg_backpack.utilities.Converters;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.JoinSessionViewModel;
 
@@ -63,11 +65,11 @@ public class JoinSessionActivity extends AppCompatActivity {
                 Snackbar.make(view, "Password cannot be empty", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             else
-                sendRequest(view);
+                sendJoinSessionRequest(view);
         });
     }
 
-    private void sendRequest(View view) {
+    private void sendJoinSessionRequest(View view) {
         Application userData = Application.getInstance();
         Loading.showLoading(loadingProgressBar);
         viewModel.joinSession(Integer.valueOf(sessionIdEditText.getText().toString().trim()),
@@ -78,7 +80,8 @@ public class JoinSessionActivity extends AppCompatActivity {
                 if (!responseWrapper.hasBeenHandled()) {
                     ResponseWrapperJsonObject response = responseWrapper.getContentIfNotHandled();
                     if (response.getErrorMessage() == null) {
-                        redirectToSessionActivity();
+                        Session session = Converters.convertToSession(response.getBody());
+                        redirectToSessionActivity(session.getSessionID(), getCurrentUsersCharacter(session).getGameMaster());
                     } else {
                         Loading.hideLoading(loadingProgressBar);
                         Snackbar.make(view, response.getErrorMessage(), Snackbar.LENGTH_LONG)
@@ -90,8 +93,22 @@ public class JoinSessionActivity extends AppCompatActivity {
         Loading.showLoading(loadingProgressBar);
     }
 
-    private void redirectToSessionActivity() {
+    private Character getCurrentUsersCharacter(Session session) {
+        Integer userID = Application.getInstance().getUserID();
+        Character character = new Character();
+        for (int i = 0; i < session.getCharacters().size(); i++) {
+            if (session.getCharacters().get(i).getUserID().equals(userID)) {
+                character = session.getCharacters().get(i);
+                break;
+            }
+        }
+        return character;
+    }
+
+    private void redirectToSessionActivity(int sessionID, boolean isGameMaster) {
         Intent intent = new Intent(this, SessionActivity.class);
+        intent.putExtra("sessionID", sessionID);
+        intent.putExtra("isGameMaster", isGameMaster);
         startActivity(intent);
         overridePendingTransition(0, 0);
     }

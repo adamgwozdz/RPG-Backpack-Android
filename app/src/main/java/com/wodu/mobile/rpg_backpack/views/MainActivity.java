@@ -45,19 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupHeader();
         setupButtons();
-
-        Loading.showLoading(loadingProgressBar);
-        viewModel.getSessions(true).observe(this, new androidx.lifecycle.Observer<List<Session>>() {
-            @Override
-            public void onChanged(List<Session> sessions) {
-                Loading.hideLoading(loadingProgressBar);
-                sessionList = sessions;
-                sessionCount = sessions.size();
-                setupHeader();
-                setupSessionsList();
-            }
-        });
-        Loading.showLoading(loadingProgressBar);
+        sendGetSessionsRequest();
     }
 
     private void setupHeader() {
@@ -91,11 +79,26 @@ public class MainActivity extends AppCompatActivity {
         viewModel.setupFloatingActionButtons(buttonList, recyclerView);
     }
 
+    private void sendGetSessionsRequest() {
+        Loading.showLoading(loadingProgressBar);
+        viewModel.getSessions(true).observe(this, new androidx.lifecycle.Observer<List<Session>>() {
+            @Override
+            public void onChanged(List<Session> sessions) {
+                Loading.hideLoading(loadingProgressBar);
+                sessionList = sessions;
+                sessionCount = sessions.size();
+                setupHeader();
+                setupSessionsList();
+            }
+        });
+        Loading.showLoading(loadingProgressBar);
+    }
+
     private void setupSessionsList() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         RecyclerView recyclerView = findViewById(R.id.activity_main_body_sessions_recycler_view);
         recyclerView.setLayoutManager(layoutManager);
-        SessionsListAdapter adapter = new SessionsListAdapter(sessionList);
+        SessionsListAdapter adapter = new SessionsListAdapter(this, sessionList);
         recyclerView.setAdapter(adapter);
     }
 

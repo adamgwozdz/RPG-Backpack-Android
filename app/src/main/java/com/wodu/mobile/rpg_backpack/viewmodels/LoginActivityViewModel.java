@@ -82,33 +82,6 @@ public class LoginActivityViewModel extends ViewModel {
                 disposables.clear();
             }
         });
-
-/*        userRepository.login(email, password).subscribe(new Observer<JsonObject>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                disposables.add(d);
-            }
-
-            @Override
-            public void onNext(@NonNull JsonObject jsonResponse) {
-                String token = Utilities.jsonResponseStringToString(jsonResponse.get("token").toString());
-                Application.getInstance().setToken(token);
-                loginMutableLiveData.postValue(token);
-                Log.d(TAG, "Token: " + token);
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-                String error = e.getMessage();
-                loginMutableLiveData.postValue(error.trim());
-                Log.d(TAG, "onError: " + error);
-            }
-
-            @Override
-            public void onComplete() {
-                disposables.clear();
-            }
-        });*/
     }
 
     public void validateInput(TextInputLayout emailTextInputLayout, TextInputLayout passwordTextInputLayout,

@@ -72,11 +72,11 @@ public class RegisterActivity extends AppCompatActivity {
                 Snackbar.make(view, "Password cannot be empty", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             else
-                sendRequest(view);
+                sendRegisterRequest(view);
         });
     }
 
-    private void sendRequest(View view) {
+    private void sendRegisterRequest(View view) {
         String email = emailEditText.getText().toString().trim();
         String name = nameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();

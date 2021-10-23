@@ -25,7 +25,7 @@
             android:textSize="@dimen/_20sdp" />
 
         <TextView
-            android:id="@+id/item_session_modification_time_text_view"
+            android:id="@+id/item_session_session_id"
             android:layout_width="@dimen/_225sdp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_session_title_text_view"
@@ -37,7 +37,7 @@
             android:id="@+id/item_session_players_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/item_session_modification_time_text_view"
+            android:layout_toEndOf="@+id/item_session_session_id"
             android:gravity="center_horizontal"
             android:text="@string/players"
             android:textSize="@dimen/_10sdp" />
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_session_players_text_view"
-            android:layout_toEndOf="@+id/item_session_modification_time_text_view"
+            android:layout_toEndOf="@+id/item_session_session_id"
             android:gravity="center_horizontal"
             android:text="1"
             android:textSize="@dimen/_24sdp" />

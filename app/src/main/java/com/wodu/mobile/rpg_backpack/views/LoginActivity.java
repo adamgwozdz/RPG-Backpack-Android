@@ -69,11 +69,11 @@ public class LoginActivity extends AppCompatActivity {
                 Snackbar.make(view, "Password cannot be empty", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             else
-                sendRequest(view);
+                sendLoginRequest(view);
         });
     }
 
-    private void sendRequest(View view) {
+    private void sendLoginRequest(View view) {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 

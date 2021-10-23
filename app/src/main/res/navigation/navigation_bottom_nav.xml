@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_menu"
+    app:startDestination="@id/navigation_users_fragment">
+
+    <fragment
+        android:id="@+id/navigation_users_fragment"
+        android:name="com.wodu.mobile.rpg_backpack.views.session.UsersFragment"
+        android:label="users_fragment"
+        tools:layout="@layout/fragment_users" />
+    <fragment
+        android:id="@+id/navigation_equipment_fragment"
+        android:name="com.wodu.mobile.rpg_backpack.views.session.EquipmentFragment"
+        android:label="equipment_fragment"
+        tools:layout="@layout/fragment_equipment" />
+<!--    <fragment
+        android:id="@+id/navigation_history_fragment"
+        android:name="com.wodu.mobile.rpg_backpack.views.session.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />-->
+</navigation>

@@ -20,6 +20,7 @@ import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.response_wrappers.Event;
 import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
+import com.wodu.mobile.rpg_backpack.utilities.Converters;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.CreateSessionActivityViewModel;
 
@@ -65,11 +66,11 @@ public class CreateSessionActivity extends AppCompatActivity {
                 Snackbar.make(view, "Password cannot be empty", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             else
-                sendRequest(view);
+                sendCreateSessionRequest(view);
         });
     }
 
-    private void sendRequest(View view) {
+    private void sendCreateSessionRequest(View view) {
         int maxAttributes = viewModel.getMaxAttributesNumber(Application.getInstance().getEmailVerified());
         Loading.showLoading(loadingProgressBar);
         viewModel.createSession(nameEditText.getText().toString().trim(),
@@ -80,8 +81,9 @@ public class CreateSessionActivity extends AppCompatActivity {
                 if (!responseWrapper.hasBeenHandled()) {
                     ResponseWrapperJsonObject response = responseWrapper.getContentIfNotHandled();
                     if (response.getErrorMessage() == null) {
-                        Session session = viewModel.convertToSession(response.getBody());
-                        createCharacter(view, session);
+                        Session session = Converters.convertToSession(response.getBody());
+                        //Session session = viewModel.convertToSession(response.getBody());
+                        sendCreateCharacterRequest(view, session);
                     } else {
                         Loading.hideLoading(loadingProgressBar);
                         Snackbar.make(view, response.getErrorMessage(), Snackbar.LENGTH_LONG)
@@ -93,7 +95,7 @@ public class CreateSessionActivity extends AppCompatActivity {
         Loading.showLoading(loadingProgressBar);
     }
 
-    private void createCharacter(View view, Session session) {
+    private void sendCreateCharacterRequest(View view, Session session) {
         Loading.showLoading(loadingProgressBar);
         viewModel.createCharacter(Application.getInstance().getUserID(), session.getSessionID(),
                 "Game master", true, null).observe(this, new Observer<Event<ResponseWrapperJsonObject>>() {
@@ -102,8 +104,9 @@ public class CreateSessionActivity extends AppCompatActivity {
                 if (!responseWrapper.hasBeenHandled()) {
                     ResponseWrapperJsonObject response = responseWrapper.getContentIfNotHandled();
                     if (response.getErrorMessage() == null) {
-                        Log.d(TAG, "Created character: " + response.getBody().toString());
-                        redirectToSessionActivity();
+                        Character character = Converters.convertToCharacter(response.getBody());
+                        //Character character = viewModel.convertToCharacter(response.getBody());
+                        redirectToSessionActivity(session.getSessionID(), character.getGameMaster());
                     } else {
                         Loading.hideLoading(loadingProgressBar);
                         Snackbar.make(view, response.getErrorMessage(), Snackbar.LENGTH_LONG)
@@ -115,8 +118,10 @@ public class CreateSessionActivity extends AppCompatActivity {
         Loading.showLoading(loadingProgressBar);
     }
 
-    private void redirectToSessionActivity() {
+    private void redirectToSessionActivity(int sessionID, boolean isGameMaster) {
         Intent intent = new Intent(this, SessionActivity.class);
+        intent.putExtra("sessionID", sessionID);
+        intent.putExtra("isGameMaster", isGameMaster);
         startActivity(intent);
         overridePendingTransition(0, 0);
     }

@@ -35,6 +35,9 @@ public class Character {
         this.image = image;
     }
 
+    public Character() {
+    }
+
     @Override
     public String toString() {
         return "Character{" +
