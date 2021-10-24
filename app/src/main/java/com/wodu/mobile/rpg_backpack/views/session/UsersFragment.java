@@ -18,7 +18,7 @@ import com.wodu.mobile.rpg_backpack.viewmodels.session.UsersFragmentViewModel;
 
 public class UsersFragment extends Fragment {
 
-    private UsersFragmentViewModel mViewModel;
+    private UsersFragmentViewModel viewModel;
 
     public static UsersFragment newInstance() {
         return new UsersFragment();
@@ -33,18 +33,11 @@ public class UsersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(UsersFragmentViewModel.class);
 
         TextView sessionIdTextView = view.findViewById(R.id.fragment_users_session_id);
         int sessionID = getActivity().getIntent().getIntExtra("sessionID", 0);
         boolean isGameMaster = getActivity().getIntent().getBooleanExtra("isGameMaster", false);
         sessionIdTextView.setText(sessionID + " " + isGameMaster);
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(UsersFragmentViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
 }

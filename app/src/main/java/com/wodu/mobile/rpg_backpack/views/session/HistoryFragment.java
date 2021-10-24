@@ -14,10 +14,11 @@ import android.view.ViewGroup;
 
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.viewmodels.session.HistoryFragmentViewModel;
+import com.wodu.mobile.rpg_backpack.viewmodels.session.UsersFragmentViewModel;
 
 public class HistoryFragment extends Fragment {
 
-    private HistoryFragmentViewModel mViewModel;
+    private HistoryFragmentViewModel viewModel;
 
     public static HistoryFragment newInstance() {
         return new HistoryFragment();
@@ -30,10 +31,8 @@ public class HistoryFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(HistoryFragmentViewModel.class);
-        // TODO: Use the ViewModel
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(HistoryFragmentViewModel.class);
     }
-
 }

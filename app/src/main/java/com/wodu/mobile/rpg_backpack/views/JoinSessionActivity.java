@@ -1,6 +1,7 @@
 package com.wodu.mobile.rpg_backpack.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,12 +23,13 @@ import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
 import com.wodu.mobile.rpg_backpack.utilities.Converters;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.JoinSessionViewModel;
+import com.wodu.mobile.rpg_backpack.viewmodels.RegisterActivityViewModel;
 
 public class JoinSessionActivity extends AppCompatActivity {
 
     private final String TAG = "JoinSessionActivity";
 
-    private final JoinSessionViewModel viewModel = new JoinSessionViewModel();
+    private JoinSessionViewModel viewModel;
     private EditText sessionIdEditText;
     private EditText passwordEditText;
     private TextInputLayout sessionIdTextInputLayout;
@@ -39,6 +41,7 @@ public class JoinSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_session);
+        viewModel = new ViewModelProvider(this).get(JoinSessionViewModel.class);
         AndroidUtilities.setupUI(this, findViewById(R.id.activity_join_master_view));
 
         sessionIdEditText = findViewById(R.id.activity_join_session_id_field_edit_text);

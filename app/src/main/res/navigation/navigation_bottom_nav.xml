@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_menu"
+    android:id="@+id/navigation_menu_game_master"
     app:startDestination="@id/navigation_users_fragment">
 
     <fragment
@@ -15,9 +15,10 @@
         android:name="com.wodu.mobile.rpg_backpack.views.session.EquipmentFragment"
         android:label="equipment_fragment"
         tools:layout="@layout/fragment_equipment" />
-<!--    <fragment
+
+    <fragment
         android:id="@+id/navigation_history_fragment"
         android:name="com.wodu.mobile.rpg_backpack.views.session.HistoryFragment"
-        android:label="fragment_history"
-        tools:layout="@layout/fragment_history" />-->
+        android:label="history_fragment"
+        tools:layout="@layout/fragment_history" />
 </navigation>

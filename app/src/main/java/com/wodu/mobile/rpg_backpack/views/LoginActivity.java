@@ -2,6 +2,7 @@ package com.wodu.mobile.rpg_backpack.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,12 +19,13 @@ import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.LoginActivityViewModel;
+import com.wodu.mobile.rpg_backpack.viewmodels.session.HistoryFragmentViewModel;
 
 public class LoginActivity extends AppCompatActivity {
 
     private final String TAG = "LoginActivity";
 
-    private LoginActivityViewModel viewModel = new LoginActivityViewModel();
+    private LoginActivityViewModel viewModel;
     private EditText emailEditText;
     private EditText passwordEditText;
     private TextInputLayout emailTextInputLayout;
@@ -36,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        viewModel = new ViewModelProvider(this).get(LoginActivityViewModel.class);
         AndroidUtilities.setupUI(this, findViewById(R.id.activity_login_master_view));
         viewModel.revokeToken();
 

@@ -14,10 +14,11 @@ import android.view.ViewGroup;
 
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.viewmodels.session.EquipmentFragmentViewModel;
+import com.wodu.mobile.rpg_backpack.viewmodels.session.UsersFragmentViewModel;
 
 public class EquipmentFragment extends Fragment {
 
-    private EquipmentFragmentViewModel mViewModel;
+    private EquipmentFragmentViewModel viewModel;
 
     public static EquipmentFragment newInstance() {
         return new EquipmentFragment();
@@ -30,10 +31,8 @@ public class EquipmentFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(EquipmentFragmentViewModel.class);
-        // TODO: Use the ViewModel
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(EquipmentFragmentViewModel.class);
     }
-
 }

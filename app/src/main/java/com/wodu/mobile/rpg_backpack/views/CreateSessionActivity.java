@@ -2,6 +2,7 @@ package com.wodu.mobile.rpg_backpack.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,12 +24,13 @@ import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
 import com.wodu.mobile.rpg_backpack.utilities.Converters;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.CreateSessionActivityViewModel;
+import com.wodu.mobile.rpg_backpack.viewmodels.RegisterActivityViewModel;
 
 public class CreateSessionActivity extends AppCompatActivity {
 
     private final String TAG = "CreateSessionActivity";
 
-    private final CreateSessionActivityViewModel viewModel = new CreateSessionActivityViewModel();
+    private CreateSessionActivityViewModel viewModel;
     private EditText nameEditText;
     private EditText passwordEditText;
     private TextInputLayout nameTextInputLayout;
@@ -40,6 +42,7 @@ public class CreateSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_session);
+        viewModel = new ViewModelProvider(this).get(CreateSessionActivityViewModel.class);
         AndroidUtilities.setupUI(this, findViewById(R.id.activity_create_master_view));
 
         nameEditText = findViewById(R.id.activity_create_session_name_field_edit_text);

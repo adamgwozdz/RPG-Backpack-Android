@@ -10,4 +10,9 @@
         android:id="@+id/navigation_equipment_fragment"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="Equipment" />
+
+    <item
+        android:id="@+id/navigation_history_fragment"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="History" />
 </menu>

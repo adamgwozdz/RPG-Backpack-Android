@@ -2,6 +2,7 @@ package com.wodu.mobile.rpg_backpack.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 
 import android.content.Intent;
@@ -18,6 +19,7 @@ import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
+import com.wodu.mobile.rpg_backpack.viewmodels.LoginActivityViewModel;
 import com.wodu.mobile.rpg_backpack.viewmodels.RegisterActivityViewModel;
 
 
@@ -25,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private final String TAG = "RegisterActivity";
 
-    private RegisterActivityViewModel viewModel = new RegisterActivityViewModel();
+    private RegisterActivityViewModel viewModel;
     private EditText nameEditText;
     private EditText emailEditText;
     private EditText passwordEditText;
@@ -39,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        viewModel = new ViewModelProvider(this).get(RegisterActivityViewModel.class);
         AndroidUtilities.setupUI(this, findViewById(R.id.activity_register_master_view));
         viewModel.revokeToken();
 

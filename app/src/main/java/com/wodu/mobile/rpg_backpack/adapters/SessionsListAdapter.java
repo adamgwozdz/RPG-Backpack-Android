@@ -82,12 +82,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         int userID = Application.getInstance().getUserID();
         int characterUserId = sessionList.get(position).getCharacters().get(0).getUserID();
         boolean isGameMaster = sessionList.get(position).getCharacters().get(0).getGameMaster();
-        //TODO For some reason sometimes even without meeting if statement requirements and executing code, color is changed
         if (userID == characterUserId && isGameMaster)
             sessionCardView.setStrokeColor(view.getResources().getColor(R.color.color_image_border));
-        else {
-            Log.d(TAG, "setupSessionOwnerIndicator: " + position);
-        }
     }
 
     private void setupSessionButtons(MaterialCardView sessionCardView, int sessionID, boolean isGameMaster) {
