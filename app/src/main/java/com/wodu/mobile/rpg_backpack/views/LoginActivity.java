@@ -18,6 +18,7 @@ import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
+import com.wodu.mobile.rpg_backpack.utilities.Redirections;
 import com.wodu.mobile.rpg_backpack.viewmodels.LoginActivityViewModel;
 import com.wodu.mobile.rpg_backpack.viewmodels.session.HistoryFragmentViewModel;
 
@@ -51,11 +52,13 @@ public class LoginActivity extends AppCompatActivity {
         loadingProgressBar = findViewById(R.id.activity_login_loading_spinner);
 
         setupLoginButton();
+        setupRegisterButton();
         viewModel.validateInput(emailTextInputLayout, passwordTextInputLayout, emailEditText, passwordEditText);
+    }
 
+    private void setupRegisterButton() {
         registerButton.setOnClickListener(view -> {
-            Intent intent = new Intent(this, RegisterActivity.class);
-            startActivity(intent);
+            Redirections.redirectToRegisterActivity(this);
             overridePendingTransition(0, 0);
         });
     }
@@ -87,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (!responseWrapper.hasBeenHandled()) {
                     ResponseWrapperJsonObject response = responseWrapper.getContentIfNotHandled();
                     if (response.getErrorMessage() == null) {
-                        redirectToMainActivity();
+                        Redirections.redirectToMainActivity(view.getContext());
                     } else {
                         Loading.hideLoading(loadingProgressBar);
                         Snackbar.make(view, response.getErrorMessage(), Snackbar.LENGTH_LONG)
@@ -97,11 +100,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         Loading.showLoading(loadingProgressBar);
-    }
-
-    private void redirectToMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
     }
 }

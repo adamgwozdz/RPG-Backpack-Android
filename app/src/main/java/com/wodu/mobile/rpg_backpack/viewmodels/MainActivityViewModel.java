@@ -2,12 +2,9 @@ package com.wodu.mobile.rpg_backpack.viewmodels;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.lifecycle.MutableLiveData;
@@ -19,11 +16,7 @@ import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.models.Session;
 import com.wodu.mobile.rpg_backpack.repositories.SessionRepository;
-import com.wodu.mobile.rpg_backpack.repositories.UserRepository;
-import com.wodu.mobile.rpg_backpack.views.CreateSessionActivity;
-import com.wodu.mobile.rpg_backpack.views.JoinSessionActivity;
-import com.wodu.mobile.rpg_backpack.views.LoginActivity;
-import com.wodu.mobile.rpg_backpack.views.MainActivity;
+import com.wodu.mobile.rpg_backpack.utilities.Redirections;
 
 import java.util.List;
 
@@ -192,8 +185,7 @@ public class MainActivityViewModel extends ViewModel {
                 Log.d(TAG, "onClick: Join");
                 menuOpen[0] = closeMenu(menuOpen[0], buttonList, translationY);
                 recyclerView.setAlpha(1f);
-                Intent intent = new Intent(view.getContext(), JoinSessionActivity.class);
-                view.getContext().startActivity(intent);
+                Redirections.redirectToJoinSessionActivity(view.getContext());
                 ((Activity) view.getContext()).overridePendingTransition(0, 0);
             }
         });
@@ -203,8 +195,7 @@ public class MainActivityViewModel extends ViewModel {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Create");
                 recyclerView.setAlpha(1f);
-                Intent intent = new Intent(view.getContext(), CreateSessionActivity.class);
-                view.getContext().startActivity(intent);
+                Redirections.redirectToCreateSessionActivity(view.getContext());
                 ((Activity) view.getContext()).overridePendingTransition(0, 0);
             }
         });
@@ -224,8 +215,7 @@ public class MainActivityViewModel extends ViewModel {
                 Log.d(TAG, "-----------------------------------------------LOGOUT-----------------------------------------------");
                 recyclerView.setAlpha(1f);
                 Application.getInstance().resetToken();
-                Intent intent = new Intent(view.getContext(), LoginActivity.class);
-                view.getContext().startActivity(intent);
+                Redirections.redirectToLoginActivity(view.getContext());
                 ((Activity) view.getContext()).overridePendingTransition(0, 0);
             }
         });

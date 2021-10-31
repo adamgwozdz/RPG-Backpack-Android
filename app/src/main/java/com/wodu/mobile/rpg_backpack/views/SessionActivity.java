@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.wodu.mobile.rpg_backpack.R;
+import com.wodu.mobile.rpg_backpack.utilities.Redirections;
 import com.wodu.mobile.rpg_backpack.viewmodels.SessionActivityViewModel;
 
 public class SessionActivity extends FragmentActivity {
@@ -61,8 +62,7 @@ public class SessionActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Redirections.redirectToMainActivity(this);
         overridePendingTransition(0, 0);
     }
 }

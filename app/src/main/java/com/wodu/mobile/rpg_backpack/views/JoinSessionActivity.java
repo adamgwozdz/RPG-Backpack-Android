@@ -3,7 +3,6 @@ package com.wodu.mobile.rpg_backpack.views;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -117,8 +116,7 @@ public class JoinSessionActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Redirections.redirectToMainActivity(this);
         overridePendingTransition(0, 0);
     }
 }

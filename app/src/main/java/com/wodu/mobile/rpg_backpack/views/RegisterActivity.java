@@ -5,7 +5,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +18,7 @@ import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
+import com.wodu.mobile.rpg_backpack.utilities.Redirections;
 import com.wodu.mobile.rpg_backpack.viewmodels.LoginActivityViewModel;
 import com.wodu.mobile.rpg_backpack.viewmodels.RegisterActivityViewModel;
 
@@ -91,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!responseWrapper.hasBeenHandled()) {
                     String error = responseWrapper.getContentIfNotHandled().getErrorMessage();
                     if (error == null) {
-                        redirectToMainActivity();
+                        Redirections.redirectToMainActivity(view.getContext());
                     } else {
                         Loading.hideLoading(loadingProgressBar);
                         Snackbar.make(view, error, Snackbar.LENGTH_LONG)
@@ -101,12 +101,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
         Loading.showLoading(loadingProgressBar);
-    }
-
-    private void redirectToMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
     }
 
     @Override
