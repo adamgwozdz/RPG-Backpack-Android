@@ -23,6 +23,7 @@ import com.wodu.mobile.rpg_backpack.response_wrappers.ResponseWrapperJsonObject;
 import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
 import com.wodu.mobile.rpg_backpack.utilities.Converters;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
+import com.wodu.mobile.rpg_backpack.utilities.Redirections;
 import com.wodu.mobile.rpg_backpack.viewmodels.CreateSessionActivityViewModel;
 import com.wodu.mobile.rpg_backpack.viewmodels.RegisterActivityViewModel;
 
@@ -109,7 +110,7 @@ public class CreateSessionActivity extends AppCompatActivity {
                     if (response.getErrorMessage() == null) {
                         Character character = Converters.convertToCharacter(response.getBody());
                         //Character character = viewModel.convertToCharacter(response.getBody());
-                        redirectToSessionActivity(session.getSessionID(), character.getGameMaster());
+                        redirectToSessionActivity(session.getSessionID(), session.getName(), character.getGameMaster());
                     } else {
                         Loading.hideLoading(loadingProgressBar);
                         Snackbar.make(view, response.getErrorMessage(), Snackbar.LENGTH_LONG)
@@ -121,11 +122,8 @@ public class CreateSessionActivity extends AppCompatActivity {
         Loading.showLoading(loadingProgressBar);
     }
 
-    private void redirectToSessionActivity(int sessionID, boolean isGameMaster) {
-        Intent intent = new Intent(this, SessionActivity.class);
-        intent.putExtra("sessionID", sessionID);
-        intent.putExtra("isGameMaster", isGameMaster);
-        startActivity(intent);
+    private void redirectToSessionActivity(int sessionID, String sessionName, boolean isGameMaster) {
+        Redirections.redirectToSessionActivity(this, sessionID, sessionName, isGameMaster);
         overridePendingTransition(0, 0);
     }
 

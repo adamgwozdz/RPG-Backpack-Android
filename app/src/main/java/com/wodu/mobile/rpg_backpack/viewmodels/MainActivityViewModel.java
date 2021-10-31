@@ -150,6 +150,10 @@ public class MainActivityViewModel extends ViewModel {
             textView.setText(R.string.email_unverified);
     }
 
+    public void setSessionCount(TextView textView, Integer sessionCount) {
+        textView.setText(String.valueOf(sessionCount));
+    }
+
     public void setSubscriptionIconVisibility(TextView textView) {
         if (!Application.getInstance().getSubscription())
             textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);

@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.viewmodels.session.HistoryFragmentViewModel;
-import com.wodu.mobile.rpg_backpack.viewmodels.session.UsersFragmentViewModel;
 
 public class HistoryFragment extends Fragment {
 

@@ -1,11 +1,6 @@
 package com.wodu.mobile.rpg_backpack.views;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -15,15 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.adapters.SessionsListAdapter;
 import com.wodu.mobile.rpg_backpack.models.Session;
-import com.wodu.mobile.rpg_backpack.utilities.AndroidUtilities;
 import com.wodu.mobile.rpg_backpack.utilities.Loading;
 import com.wodu.mobile.rpg_backpack.viewmodels.MainActivityViewModel;
-import com.wodu.mobile.rpg_backpack.viewmodels.RegisterActivityViewModel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -52,17 +43,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupHeader() {
-        TextView usernameTextView = findViewById(R.id.activity_main_user_name);
+        TextView usernameTextView = findViewById(R.id.activity_main_session_name);
         TextView emailConfirmationMessageTextView = findViewById(R.id.activity_main_email_confirmation_message);
         TextView sessionCountTextView = findViewById(R.id.activity_main_sessions_count);
 
         viewModel.setUserName(usernameTextView);
         viewModel.scaleTextSize(usernameTextView);
         viewModel.setSubscriptionIconVisibility(usernameTextView);
-
         viewModel.setEmailConfirmationMessage(emailConfirmationMessageTextView);
-
-        sessionCountTextView.setText(String.valueOf(sessionCount));
+        viewModel.setSessionCount(sessionCountTextView, sessionCount);
     }
 
     private void setupButtons() {

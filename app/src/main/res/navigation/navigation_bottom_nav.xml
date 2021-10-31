@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_menu_game_master"
-    app:startDestination="@id/navigation_users_fragment">
+    app:startDestination="@id/navigation_characters_fragment">
 
     <fragment
-        android:id="@+id/navigation_users_fragment"
-        android:name="com.wodu.mobile.rpg_backpack.views.session.UsersFragment"
+        android:id="@+id/navigation_characters_fragment"
+        android:name="com.wodu.mobile.rpg_backpack.views.session.CharactersFragment"
         android:label="users_fragment"
-        tools:layout="@layout/fragment_users" />
+        tools:layout="@layout/fragment_characters" />
     <fragment
         android:id="@+id/navigation_equipment_fragment"
         android:name="com.wodu.mobile.rpg_backpack.views.session.EquipmentFragment"

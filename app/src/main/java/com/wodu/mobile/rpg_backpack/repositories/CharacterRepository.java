@@ -3,10 +3,13 @@ package com.wodu.mobile.rpg_backpack.repositories;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.wodu.mobile.rpg_backpack.Application;
+import com.wodu.mobile.rpg_backpack.models.Character;
 import com.wodu.mobile.rpg_backpack.utilities.RestAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Response;
@@ -30,6 +33,11 @@ public class CharacterRepository {
     public Observable<Response<JsonObject>> createCharacter(Integer userID, Integer sessionID, String name, Boolean isGameMaster, String image) {
         characterService = RestAdapter.getAdapter().create(CharacterService.class);
         return characterService.createCharacter(Application.getInstance().getToken(), sessionID.toString(), createCharacterBody(userID, name, isGameMaster, image));
+    }
+
+    public Observable<List<Character>> getSessionCharacters(Integer sessionID) {
+        characterService = RestAdapter.getAdapter().create(CharacterService.class);
+        return characterService.getSessionCharacters(Application.getInstance().getToken(), sessionID.toString());
     }
 
     private JsonObject createCharacterBody(Integer userID, String name, Boolean isGameMaster, String image) {

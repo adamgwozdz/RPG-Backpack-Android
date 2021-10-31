@@ -17,6 +17,7 @@ import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.models.Character;
 import com.wodu.mobile.rpg_backpack.models.Session;
+import com.wodu.mobile.rpg_backpack.utilities.Redirections;
 import com.wodu.mobile.rpg_backpack.views.SessionActivity;
 
 import java.util.List;
@@ -53,13 +54,14 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         Character character = getCurrentUsersCharacter(session);
 
         int sessionID = session.getSessionID();
+        String sessionName = session.getName();
         boolean isGameMaster = character.getGameMaster();
 
         setupSessionName(sessionNameTextView, position);
         setupPlayerCounter(sessionPlayersCountTextView, position);
         setupSessionID(sessionIdTextView, sessionID);
         setupSessionOwnerIndicator(sessionCardView, position);
-        setupSessionButtons(sessionCardView, sessionID, isGameMaster);
+        setupSessionButtons(sessionCardView, sessionID, sessionName, isGameMaster);
     }
 
     private void setupSessionName(TextView sessionNameTextView, int position) {
@@ -86,21 +88,18 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             sessionCardView.setStrokeColor(view.getResources().getColor(R.color.color_image_border));
     }
 
-    private void setupSessionButtons(MaterialCardView sessionCardView, int sessionID, boolean isGameMaster) {
+    private void setupSessionButtons(MaterialCardView sessionCardView, int sessionID, String sessionName, boolean isGameMaster) {
         sessionCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                redirectToSessionActivity(sessionID, isGameMaster);
+                redirectToSessionActivity(sessionID, sessionName, isGameMaster);
             }
         });
     }
 
-    private void redirectToSessionActivity(int sessionID, boolean isGameMaster) {
+    private void redirectToSessionActivity(int sessionID, String sessionName, boolean isGameMaster) {
         Activity activity = (Activity) context;
-        Intent intent = new Intent(context, SessionActivity.class);
-        intent.putExtra("sessionID", sessionID);
-        intent.putExtra("isGameMaster", isGameMaster);
-        context.startActivity(intent);
+        Redirections.redirectToSessionActivity(context, sessionID, sessionName, isGameMaster);
         activity.overridePendingTransition(0, 0);
     }
 
