@@ -40,6 +40,11 @@ public class CharacterRepository {
         return characterService.updateCharacter(Application.getInstance().getToken(), sessionID.toString(), createCharacterBody(name, isGameMaster, image));
     }
 
+    public Observable<Response<JsonObject>> kickCharacter(Integer characterID) {
+        characterService = RestAdapter.getAdapter().create(CharacterService.class);
+        return characterService.kickCharacter(Application.getInstance().getToken(), characterID.toString());
+    }
+
     public Observable<List<Character>> getSessionCharacters(Integer sessionID) {
         characterService = RestAdapter.getAdapter().create(CharacterService.class);
         return characterService.getSessionCharacters(Application.getInstance().getToken(), sessionID.toString());

@@ -1,5 +1,6 @@
 package com.wodu.mobile.rpg_backpack.views.session;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -78,10 +79,11 @@ public class CharactersFragment extends Fragment {
         CharactersListAdapter adapter = new CharactersListAdapter(view.getContext(), charactersList);
         recyclerView.setAdapter(adapter);
 
-        observeCharacterName(recyclerView, adapter);
+        observeCharacterName(adapter);
+        observeKickingCharacter(adapter);
     }
 
-    private void observeCharacterName(RecyclerView recyclerView, CharactersListAdapter adapter) {
+    private void observeCharacterName(CharactersListAdapter adapter) {
         adapter.characterMutableLiveData.observe(getViewLifecycleOwner(), new androidx.lifecycle.Observer<Character>() {
             @Override
             public void onChanged(Character character) {
@@ -89,10 +91,23 @@ public class CharactersFragment extends Fragment {
                         .observe(getViewLifecycleOwner(), new androidx.lifecycle.Observer<Boolean>() {
                             @Override
                             public void onChanged(Boolean aBoolean) {
-                                if (aBoolean)
-                                    recyclerView.setAdapter(adapter);
+
                             }
                         });
+            }
+        });
+    }
+
+    private void observeKickingCharacter(CharactersListAdapter adapter) {
+        adapter.kickedCharacterLiveData.observe(getViewLifecycleOwner(), new Observer<Character>() {
+            @Override
+            public void onChanged(Character character) {
+                viewModel.kickCharacterLiveData(character.getCharacterID()).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+
+                    }
+                });
             }
         });
     }

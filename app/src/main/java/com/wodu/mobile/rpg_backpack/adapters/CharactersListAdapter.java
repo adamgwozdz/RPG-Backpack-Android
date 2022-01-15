@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.google.android.material.button.MaterialButton;
 import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.models.Character;
+import com.wodu.mobile.rpg_backpack.utilities.Redirections;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class CharactersListAdapter extends RecyclerView.Adapter<CharactersListAd
     private View view;
 
     public final MutableLiveData<Character> characterMutableLiveData = new MutableLiveData<>();
+    public final MutableLiveData<Character> kickedCharacterLiveData = new MutableLiveData<>();
 
     public CharactersListAdapter(Context context, List<Character> charactersList) {
         this.context = context;
@@ -54,44 +57,87 @@ public class CharactersListAdapter extends RecyclerView.Adapter<CharactersListAd
 
         TextView characterNameTextView = holder.getCharacterName();
         MaterialButton editButton = holder.getEditButton();
+        MaterialButton kickButton = holder.getKickButton();
+        MaterialButton inspectButton = holder.getInspectButton();
+        View divider = holder.getDivider();
+
         characterNameTextView.setText(name);
 
+
+        inspectButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        // Current user
         if (userID.equals(currentUserID)) {
-            editButton.setVisibility(View.VISIBLE);
-            editButton.setOnClickListener(view -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                final EditText edittext = new EditText(context);
-                builder.setTitle("Set your character name");
-
-                builder.setView(edittext);
-
-                builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        name.setLength(0);
-                        name.append(edittext.getText().toString());
-                        characterNameTextView.setText(name);
-
-                        // Save character name
-                        charactersList.get(holder.getAdapterPosition()).setName(name.toString());
-                        characterMutableLiveData.postValue(charactersList.get(holder.getAdapterPosition()));
-                    }
-                });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.cancel();
-                    }
-                });
-
-                final AlertDialog dialog = builder.create();
-                dialog.show();
-            });
+            setupEditNameDialogBox(holder, editButton, characterNameTextView, name);
+            setupKickConfirmationDialogBox(holder, kickButton);
+            setupCurrentUserButtons(editButton, kickButton, inspectButton, divider);
         }
     }
 
     @Override
     public int getItemCount() {
         return charactersList.size();
+    }
+
+    private void setupCurrentUserButtons(MaterialButton editButton, MaterialButton kickButton, MaterialButton inspectButton, View divider) {
+        editButton.setVisibility(View.VISIBLE);
+        kickButton.setVisibility(View.VISIBLE);
+        kickButton.setText(R.string.leave);
+        inspectButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f));
+        divider.setVisibility(View.VISIBLE);
+    }
+
+    private void setupKickConfirmationDialogBox(ViewHolder holder, MaterialButton kickButton) {
+        kickButton.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Are you sure?");
+            builder.setMessage("Your equipment will be deleted");
+
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    kickedCharacterLiveData.postValue(charactersList.get(holder.getAdapterPosition()));
+                    Redirections.redirectToMainActivity(context);
+                }
+            });
+
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+                }
+            });
+
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+        });
+    }
+
+    private void setupEditNameDialogBox(ViewHolder holder, MaterialButton editButton, TextView characterNameTextView, StringBuilder name) {
+        editButton.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            final EditText edittext = new EditText(context);
+            builder.setTitle("Set your character name");
+            builder.setView(edittext);
+
+            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    name.setLength(0);
+                    name.append(edittext.getText().toString());
+                    characterNameTextView.setText(name);
+
+                    // Save character name
+                    charactersList.get(holder.getAdapterPosition()).setName(name.toString());
+                    characterMutableLiveData.postValue(charactersList.get(holder.getAdapterPosition()));
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+                }
+            });
+
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -101,6 +147,7 @@ public class CharactersListAdapter extends RecyclerView.Adapter<CharactersListAd
         private final MaterialButton kickButton;
         private final MaterialButton inspectButton;
         private final MaterialButton editButton;
+        private final View divider;
 
         public ViewHolder(View view) {
             super(view);
@@ -109,6 +156,7 @@ public class CharactersListAdapter extends RecyclerView.Adapter<CharactersListAd
             kickButton = view.findViewById(R.id.item_character_kick_button);
             inspectButton = view.findViewById(R.id.item_character_inspect_button);
             editButton = view.findViewById(R.id.item_character_edit_button);
+            divider = view.findViewById(R.id.item_character_divider);
         }
 
         public CardView getCharacterCardView() {
@@ -129,6 +177,10 @@ public class CharactersListAdapter extends RecyclerView.Adapter<CharactersListAd
 
         public MaterialButton getEditButton() {
             return editButton;
+        }
+
+        public View getDivider() {
+            return divider;
         }
     }
 

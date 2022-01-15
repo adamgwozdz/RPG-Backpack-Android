@@ -9,6 +9,7 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -38,5 +39,12 @@ public interface CharacterService {
             @Header("Authorization") String token,
             @Path(value = "characterID") String characterID,
             @Body JsonObject jsonBody
+    );
+
+    @Headers("Content-Type: application/json")
+    @DELETE("/api/app/session/characters/{characterID}")
+    Observable<Response<JsonObject>> kickCharacter(
+            @Header("Authorization") String token,
+            @Path(value = "characterID") String characterID
     );
 }

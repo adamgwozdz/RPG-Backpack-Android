@@ -34,4 +34,5 @@
     <string name="kick">Kick</string>
     <string name="inspect">Inspect</string>
     <string name="edit">Edit</string>
+    <string name="leave">Leave</string>
 </resources>

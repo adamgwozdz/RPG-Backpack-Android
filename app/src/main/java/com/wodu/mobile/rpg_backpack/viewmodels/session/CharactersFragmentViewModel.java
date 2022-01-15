@@ -28,6 +28,7 @@ public class CharactersFragmentViewModel extends ViewModel {
 
     private final MutableLiveData<List<Character>> characterMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> characterUpdatedMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> characterKickedMutableLiveData = new MutableLiveData<>();
 
     public CharactersFragmentViewModel() {
     }
@@ -40,6 +41,11 @@ public class CharactersFragmentViewModel extends ViewModel {
     public MutableLiveData<Boolean> updateCharacterLiveData(Integer characterID, String name, boolean isGameMaster, String image) {
         updateCharacter(characterID, name, isGameMaster, image);
         return characterUpdatedMutableLiveData;
+    }
+
+    public MutableLiveData<Boolean> kickCharacterLiveData(Integer characterID) {
+        kickCharacter(characterID);
+        return characterKickedMutableLiveData;
     }
 
     private void loadSessionCharacters(Integer sessionID) {
@@ -67,7 +73,6 @@ public class CharactersFragmentViewModel extends ViewModel {
     }
 
     private void updateCharacter(Integer characterID, String name, boolean isGameMaster, String image) {
-        Log.d(TAG, characterID + ", " + name + ", " + isGameMaster + ", " + image);
         characterRepository.updateCharacter(characterID, name, isGameMaster, image).subscribe(new Observer<Response<JsonObject>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -76,11 +81,37 @@ public class CharactersFragmentViewModel extends ViewModel {
 
             @Override
             public void onNext(@NonNull Response<JsonObject> jsonObjectResponse) {
-                Log.d(TAG, jsonObjectResponse.body().get("success").toString().trim());
                 if (jsonObjectResponse.body().get("success").toString().trim().equals("true"))
                     characterUpdatedMutableLiveData.postValue(true);
                 else
                     characterUpdatedMutableLiveData.postValue(false);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    private void kickCharacter(Integer characterID) {
+        characterRepository.kickCharacter(characterID).subscribe(new Observer<Response<JsonObject>>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Response<JsonObject> jsonObjectResponse) {
+                if (jsonObjectResponse.body().get("success").toString().trim().equals("true"))
+                    characterKickedMutableLiveData.postValue(true);
+                else
+                    characterKickedMutableLiveData.postValue(false);
             }
 
             @Override

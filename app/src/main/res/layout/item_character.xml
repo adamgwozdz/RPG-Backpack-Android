@@ -75,12 +75,15 @@
                 android:background="@color/green_2"
                 android:elevation="0dp"
                 android:text="@string/kick"
-                app:cornerRadius="0dp" />
+                app:cornerRadius="0dp"
+                android:visibility="gone"/>
 
             <View
+                android:id="@+id/item_character_divider"
                 android:layout_width="@dimen/_2sdp"
                 android:layout_height="match_parent"
-                android:background="@color/green_3" />
+                android:background="@color/green_3"
+                android:visibility="gone"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/item_character_inspect_button"
