@@ -83,4 +83,36 @@ public class Character {
     public String getImage() {
         return image;
     }
+
+    public void setCharacterID(Integer characterID) {
+        this.characterID = characterID;
+    }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
+    }
+
+    public void setSessionID(Integer sessionID) {
+        this.sessionID = sessionID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGameMaster(Boolean gameMaster) {
+        this.gameMaster = gameMaster;
+    }
+
+    public void setDateJoined(Timestamp dateJoined) {
+        this.dateJoined = dateJoined;
+    }
+
+    public void setDateLeft(Timestamp dateLeft) {
+        this.dateLeft = dateLeft;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

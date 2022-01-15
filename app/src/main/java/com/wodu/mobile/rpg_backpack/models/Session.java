@@ -97,6 +97,46 @@ public class Session {
         return status;
     }
 
+    public void setSessionID(Integer sessionID) {
+        this.sessionID = sessionID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setMaxAttributes(Integer maxAttributes) {
+        this.maxAttributes = maxAttributes;
+    }
+
+    public void setDateCreated(Timestamp dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public void setDateModified(Timestamp dateModified) {
+        this.dateModified = dateModified;
+    }
+
+    public void setDateRemoved(Timestamp dateRemoved) {
+        this.dateRemoved = dateRemoved;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setCharacters(List<Character> characters) {
+        this.characters = characters;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public enum USER_TIERS {
         NOT_SUBSCRIBED(5),
         SUBSCRIBED(20);

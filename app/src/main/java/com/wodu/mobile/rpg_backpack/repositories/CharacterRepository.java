@@ -35,6 +35,11 @@ public class CharacterRepository {
         return characterService.createCharacter(Application.getInstance().getToken(), sessionID.toString(), createCharacterBody(userID, name, isGameMaster, image));
     }
 
+    public Observable<Response<JsonObject>> updateCharacter(Integer sessionID, String name, Boolean isGameMaster, String image) {
+        characterService = RestAdapter.getAdapter().create(CharacterService.class);
+        return characterService.updateCharacter(Application.getInstance().getToken(), sessionID.toString(), createCharacterBody(name, isGameMaster, image));
+    }
+
     public Observable<List<Character>> getSessionCharacters(Integer sessionID) {
         characterService = RestAdapter.getAdapter().create(CharacterService.class);
         return characterService.getSessionCharacters(Application.getInstance().getToken(), sessionID.toString());
@@ -45,6 +50,24 @@ public class CharacterRepository {
         try {
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("userID", userID);
+            jsonObj.put("name", name);
+            jsonObj.put("gameMaster", isGameMaster);
+            jsonObj.put("image", image);
+
+            JsonParser jsonParser = new JsonParser();
+            gsonObject = (JsonObject) jsonParser.parse(jsonObj.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return gsonObject;
+    }
+
+    private JsonObject createCharacterBody(String name, Boolean isGameMaster, String image) {
+        JsonObject gsonObject = new JsonObject();
+        try {
+            JSONObject jsonObj = new JSONObject();
             jsonObj.put("name", name);
             jsonObj.put("gameMaster", isGameMaster);
             jsonObj.put("image", image);

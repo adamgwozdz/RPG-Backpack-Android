@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.wodu.mobile.rpg_backpack.R;
 import com.wodu.mobile.rpg_backpack.adapters.CharactersListAdapter;
@@ -78,5 +77,23 @@ public class CharactersFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         CharactersListAdapter adapter = new CharactersListAdapter(view.getContext(), charactersList);
         recyclerView.setAdapter(adapter);
+
+        observeCharacterName(recyclerView, adapter);
+    }
+
+    private void observeCharacterName(RecyclerView recyclerView, CharactersListAdapter adapter) {
+        adapter.characterMutableLiveData.observe(getViewLifecycleOwner(), new androidx.lifecycle.Observer<Character>() {
+            @Override
+            public void onChanged(Character character) {
+                viewModel.updateCharacterLiveData(character.getCharacterID(), character.getName(), character.getGameMaster(), character.getImage())
+                        .observe(getViewLifecycleOwner(), new androidx.lifecycle.Observer<Boolean>() {
+                            @Override
+                            public void onChanged(Boolean aBoolean) {
+                                if (aBoolean)
+                                    recyclerView.setAdapter(adapter);
+                            }
+                        });
+            }
+        });
     }
 }

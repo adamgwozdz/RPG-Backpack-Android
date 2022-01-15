@@ -44,9 +44,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_8sdp"
+            android:layout_toStartOf="@+id/item_character_edit_button"
             android:layout_toEndOf="@+id/item_character_avatar_border"
             android:text="@string/username"
             android:textSize="25sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/item_character_edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@string/edit"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/item_character_buttons_menu_game_master"
@@ -54,18 +65,17 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_character_avatar_border"
             android:orientation="horizontal"
-            android:weightSum="1"
-            android:background="@color/green_2">
+            android:weightSum="1">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/item_character_kick_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="@string/kick"
-                app:cornerRadius="0dp"
                 android:background="@color/green_2"
-                android:elevation="0dp"/>
+                android:elevation="0dp"
+                android:text="@string/kick"
+                app:cornerRadius="0dp" />
 
             <View
                 android:layout_width="@dimen/_2sdp"
@@ -77,10 +87,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="@string/inspect"
-                app:cornerRadius="0dp"
+                android:background="@color/green_2"
                 android:elevation="0dp"
-                android:background="@color/green_2"/>
+                android:text="@string/inspect"
+                app:cornerRadius="0dp" />
         </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -6,6 +6,7 @@ import android.widget.TextView;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.gson.JsonObject;
 import com.wodu.mobile.rpg_backpack.Application;
 import com.wodu.mobile.rpg_backpack.models.Character;
 import com.wodu.mobile.rpg_backpack.repositories.CharacterRepository;
@@ -16,15 +17,17 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import retrofit2.Response;
 
 public class CharactersFragmentViewModel extends ViewModel {
 
-    private final String TAG = "UsersFragmentViewModel";
+    private final String TAG = "CharactersFragmentViewModel";
 
     private final CharacterRepository characterRepository = CharacterRepository.getInstance();
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     private final MutableLiveData<List<Character>> characterMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> characterUpdatedMutableLiveData = new MutableLiveData<>();
 
     public CharactersFragmentViewModel() {
     }
@@ -34,7 +37,12 @@ public class CharactersFragmentViewModel extends ViewModel {
         return characterMutableLiveData;
     }
 
-    public void loadSessionCharacters(Integer sessionID) {
+    public MutableLiveData<Boolean> updateCharacterLiveData(Integer characterID, String name, boolean isGameMaster, String image) {
+        updateCharacter(characterID, name, isGameMaster, image);
+        return characterUpdatedMutableLiveData;
+    }
+
+    private void loadSessionCharacters(Integer sessionID) {
         characterRepository.getSessionCharacters(sessionID).subscribe(new Observer<List<Character>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -49,6 +57,35 @@ public class CharactersFragmentViewModel extends ViewModel {
             @Override
             public void onError(@NonNull Throwable e) {
                 Log.d(TAG, "onError: " + e);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    private void updateCharacter(Integer characterID, String name, boolean isGameMaster, String image) {
+        Log.d(TAG, characterID + ", " + name + ", " + isGameMaster + ", " + image);
+        characterRepository.updateCharacter(characterID, name, isGameMaster, image).subscribe(new Observer<Response<JsonObject>>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Response<JsonObject> jsonObjectResponse) {
+                Log.d(TAG, jsonObjectResponse.body().get("success").toString().trim());
+                if (jsonObjectResponse.body().get("success").toString().trim().equals("true"))
+                    characterUpdatedMutableLiveData.postValue(true);
+                else
+                    characterUpdatedMutableLiveData.postValue(false);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
             }
 
             @Override

@@ -85,7 +85,6 @@ public class CreateSessionActivity extends AppCompatActivity {
                     ResponseWrapperJsonObject response = responseWrapper.getContentIfNotHandled();
                     if (response.getErrorMessage() == null) {
                         Session session = Converters.convertToSession(response.getBody());
-                        //Session session = viewModel.convertToSession(response.getBody());
                         sendCreateCharacterRequest(view, session);
                     } else {
                         Loading.hideLoading(loadingProgressBar);

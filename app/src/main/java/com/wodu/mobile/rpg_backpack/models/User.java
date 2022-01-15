@@ -122,4 +122,56 @@ public class User {
     public String getProfileImage() {
         return profileImage;
     }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
+    }
+
+    public void setStatusID(Integer statusID) {
+        this.statusID = statusID;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public void setSubscription(Boolean subscription) {
+        this.subscription = subscription;
+    }
+
+    public void setDateCreated(Timestamp dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public void setDateModified(Timestamp dateModified) {
+        this.dateModified = dateModified;
+    }
+
+    public void setDateRemoved(Timestamp dateRemoved) {
+        this.dateRemoved = dateRemoved;
+    }
+
+    public void setDateSubscribed(Timestamp dateSubscribed) {
+        this.dateSubscribed = dateSubscribed;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 }

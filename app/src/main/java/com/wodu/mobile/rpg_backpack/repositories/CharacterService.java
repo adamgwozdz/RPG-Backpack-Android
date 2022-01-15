@@ -13,11 +13,12 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface CharacterService {
 
-    @GET("api/app/session/characters/{sessionID}")
+    @GET("api/app/session/characters/session/{sessionID}")
     Observable<List<Character>> getSessionCharacters(
             @Header("Authorization") String token,
             @Path(value = "sessionID") String sessionID
@@ -28,6 +29,14 @@ public interface CharacterService {
     Observable<Response<JsonObject>> createCharacter(
             @Header("Authorization") String token,
             @Path(value = "sessionID") String sessionID,
+            @Body JsonObject jsonBody
+    );
+
+    @Headers("Content-Type: application/json")
+    @PUT("/api/app/session/characters/{characterID}")
+    Observable<Response<JsonObject>> updateCharacter(
+            @Header("Authorization") String token,
+            @Path(value = "characterID") String characterID,
             @Body JsonObject jsonBody
     );
 }
